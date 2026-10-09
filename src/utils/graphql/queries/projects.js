@@ -14,6 +14,6 @@ export const MY_PROJECTS = gql`
 
 export const FETCH_PROJECT = gql`
   query FetchProject($id: ID!) {
-    fetchProject(id: $id) { ${projectFields} }
+    fetchProject(id: $id) { ${projectFields} githubInstalled repoFullName }
   }
 `

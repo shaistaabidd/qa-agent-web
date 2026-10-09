@@ -1,7 +1,7 @@
 import { Navigate, BrowserRouter, useRoutes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { AuthLayout, AppLayout } from '@layouts/index'
-import { Login, Register, ProjectsList, ProjectDetail, NotFound } from '@pages/index'
+import { Login, Register, ProjectsList, ProjectDetail, GithubCallback, NotFound } from '@pages/index'
 
 // Unlike a multi-role app, there's only one kind of authenticated user here
 // (per-project admin/member is a membership detail, not a distinct portal),
@@ -24,6 +24,7 @@ const appRoutes = () => [
     children: [
       { path: '/projects', element: <ProjectsList /> },
       { path: '/projects/:id', element: <ProjectDetail /> },
+      { path: '/github/callback', element: <GithubCallback /> },
       { path: '/', element: <Navigate to="/projects" replace /> },
       { path: '/login', element: <Navigate to="/projects" replace /> },
       { path: '/register', element: <Navigate to="/projects" replace /> },

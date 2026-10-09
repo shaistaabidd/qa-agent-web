@@ -8,6 +8,13 @@ export const runFields = `
   finishedAt
   createdAt
   scopeFeature { id name route }
+`
+
+// Heavy per-run data, only fetched when a run is opened.
+export const runDetailFields = `
+  ${runFields}
+  summary
+  networkLog
   auditLogEntries { id actionTaken targetElement createdAt }
 `
 

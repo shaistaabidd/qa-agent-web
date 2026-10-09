@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client/react'
 import Table from 'react-bootstrap/Table'
 import Card from 'react-bootstrap/Card'
@@ -16,6 +16,7 @@ import {
   PaginationBar,
 } from '@components/index'
 import { HandleChange, SweetAlert } from '@services/index'
+import { RunDetail } from './RunDetail'
 
 const STATUS_OPTIONS = [
   { value: 'QUEUED', label: 'Queued' },
@@ -29,9 +30,12 @@ export const Runs = ({ project }) => {
   const [page, setPage] = useState(1)
   const [status, setStatus] = useState('')
   const [form, setForm] = useState({ scopeFeatureId: '', roleName: '' })
+  const [openRunId, setOpenRunId] = useState(null)
 
   const { data, loading, error, refetch } = useQuery(RUNS_FOR_PROJECT, {
     variables: { projectId: project.id, page, status: status || null },
+    // Runs finish in the background, so re-check whenever the tab opens.
+    fetchPolicy: 'cache-and-network',
   })
   const { data: scopeFeaturesData } = useQuery(SCOPE_FEATURES_FOR_PROJECT, {
     variables: { projectId: project.id, perPage: 100 },
@@ -118,7 +122,7 @@ export const Runs = ({ project }) => {
         </div>
       </div>
 
-      {loading ? (
+      {loading && !data ? (
         <Loading />
       ) : (
         <>
@@ -138,15 +142,26 @@ export const Runs = ({ project }) => {
               </thead>
               <tbody>
                 {runs.map((run) => (
-                  <tr key={run.id}>
-                    <td>{run.scopeFeature?.name}</td>
-                    <td>{run.roleName}</td>
-                    <td>
-                      <RunStatusBadge status={run.status} />
-                    </td>
-                    <td>{run.startedAt ? new Date(run.startedAt).toLocaleString() : '—'}</td>
-                    <td>{run.finishedAt ? new Date(run.finishedAt).toLocaleString() : '—'}</td>
-                  </tr>
+                  <Fragment key={run.id}>
+                    <tr onClick={() => setOpenRunId(openRunId === run.id ? null : run.id)} style={{ cursor: 'pointer' }}>
+                      <td>
+                        {openRunId === run.id ? '▾' : '▸'} {run.scopeFeature?.name}
+                      </td>
+                      <td>{run.roleName}</td>
+                      <td>
+                        <RunStatusBadge status={run.status} />
+                      </td>
+                      <td>{run.startedAt ? new Date(run.startedAt).toLocaleString() : '—'}</td>
+                      <td>{run.finishedAt ? new Date(run.finishedAt).toLocaleString() : '—'}</td>
+                    </tr>
+                    {openRunId === run.id && (
+                      <tr>
+                        <td colSpan={5} className="bg-light">
+                          <RunDetail runId={run.id} projectId={project.id} />
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 ))}
               </tbody>
             </Table>

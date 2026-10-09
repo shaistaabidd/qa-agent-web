@@ -34,7 +34,7 @@ export const ProjectDetail = () => {
         </Badge>
       </div>
 
-      <Tabs defaultActiveKey="overview" className="mb-3">
+      <Tabs defaultActiveKey="overview" className="mb-3" mountOnEnter unmountOnExit>
         <Tab eventKey="overview" title="Overview">
           <Overview project={project} />
         </Tab>
@@ -47,7 +47,7 @@ export const ProjectDetail = () => {
         <Tab eventKey="runs" title="Runs">
           <Runs project={project} />
         </Tab>
-        <Tab eventKey="findings" title="Findings">
+        <Tab eventKey="findings" title="Issues">
           <Findings project={project} />
         </Tab>
         <Tab eventKey="dashboard" title="Dashboard">

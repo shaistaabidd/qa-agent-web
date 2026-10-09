@@ -12,6 +12,8 @@ export const ScopeFeatures = ({ project }) => {
 
   const { data, loading, error, refetch } = useQuery(SCOPE_FEATURES_FOR_PROJECT, {
     variables: { projectId: project.id, page },
+    // Scans finish in the background, so re-check whenever the tab is opened.
+    fetchPolicy: 'cache-and-network',
   })
   const [approveScopeFeature, { loading: approving }] = useMutation(APPROVE_SCOPE_FEATURE)
 
