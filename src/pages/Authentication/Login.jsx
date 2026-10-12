@@ -18,7 +18,8 @@ export const Login = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="text-18 semibold mb-3">Log in</div>
+      <div className="qa-auth-title">Log in</div>
+      <div className="qa-auth-subtitle">Welcome back. Sign in to see your projects and test runs.</div>
       <ErrorComponent error={error} />
       <InputField
         label="Email"

@@ -7,6 +7,7 @@ export const findingFields = `
   severity
   screenshotUrl
   category
+  source
   details
   fingerprint
   runId
@@ -27,6 +28,7 @@ export const FINDINGS_FOR_PROJECT = gql`
     $runId: ID
     $severity: FindingSeverityEnum
     $category: String
+    $source: String
   ) {
     findingsForProject(
       projectId: $projectId
@@ -36,6 +38,7 @@ export const FINDINGS_FOR_PROJECT = gql`
       runId: $runId
       severity: $severity
       category: $category
+      source: $source
     ) {
       totalPages
       nextPage

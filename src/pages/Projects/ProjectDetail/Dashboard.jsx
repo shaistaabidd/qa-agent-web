@@ -5,8 +5,17 @@ import Card from 'react-bootstrap/Card'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { FINDINGS_SUMMARY, COVERAGE } from '@graphql/queries/dashboard'
 import { Loading, ErrorComponent, SeverityBadge } from '@components/index'
+import { useEffect } from 'react'
+
+// TEMPORARY: deliberate browser memory leak to test QA Agent detection — revert after testing.
+// Every time the Dashboard tab opens, ~10 MB of row objects is cached here and never released.
+const leakedSnapshots = []
 
 export const Dashboard = ({ project }) => {
+  useEffect(() => {
+    leakedSnapshots.push(Array.from({ length: 150_000 }, (_, i) => ({ id: i, label: `finding row ${i}` })))
+  }, [])
+
   const summaryQuery = useQuery(FINDINGS_SUMMARY, { variables: { projectId: project.id } })
   const coverageQuery = useQuery(COVERAGE, { variables: { projectId: project.id } })
 
@@ -38,7 +47,7 @@ export const Dashboard = ({ project }) => {
       <Col md={6}>
         <Card>
           <Card.Body>
-            <div className="text-16 semibold mb-3">Findings</div>
+            <div className="text-16 semibold mb-3">Open issues</div>
             <ErrorComponent error={summaryQuery.error} />
             {summary && (
               <>
@@ -52,7 +61,8 @@ export const Dashboard = ({ project }) => {
                   ))}
                 </div>
                 <div className="text-14 text-gray-600">
-                  {summary.postedToClickUp} posted to ClickUp, {summary.pendingClickUp} pending
+                  {summary.resolved} resolved · {summary.totalFindings} findings across all runs ·{' '}
+                  {summary.postedToClickUp} posted to ClickUp
                 </div>
               </>
             )}

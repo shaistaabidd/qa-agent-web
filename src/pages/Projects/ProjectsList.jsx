@@ -13,6 +13,7 @@ import {
   EmptyState,
   ErrorComponent,
   PaginationBar,
+  PageHeader,
 } from '@components/index'
 import { HandleChange, SweetAlert } from '@services/index'
 
@@ -39,10 +40,11 @@ export const ProjectsList = () => {
 
   return (
     <div>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <div className="text-20 semibold">Projects</div>
-        <ButtonComponent onClick={() => setShowCreate(true)}>New project</ButtonComponent>
-      </div>
+      <PageHeader
+        title="Projects"
+        subtitle="Each project is a site under test, with its repo, credentials, runs and issues."
+        actions={<ButtonComponent onClick={() => setShowCreate(true)}>New project</ButtonComponent>}
+      />
 
       <ErrorComponent error={error} />
 
@@ -65,15 +67,22 @@ export const ProjectsList = () => {
             {projects.map((project) => (
               <tr key={project.id}>
                 <td>
-                  <Link to={`/projects/${project.id}`}>{project.name}</Link>
+                  <div className="d-flex align-items-center gap-2">
+                    <div className="qa-avatar" style={{ borderRadius: 8 }}>
+                      {project.name.slice(0, 1)}
+                    </div>
+                    <Link to={`/projects/${project.id}`} className="semibold text-black">
+                      {project.name}
+                    </Link>
+                  </div>
                 </td>
-                <td>{project.targetUrl}</td>
+                <td className="text-gray-600">{project.targetUrl}</td>
                 <td>
                   <Badge bg={project.repoConnected ? 'success' : 'secondary'}>
                     {project.repoConnected ? 'Connected' : 'Not connected'}
                   </Badge>
                 </td>
-                <td>{new Date(project.createdAt).toLocaleDateString()}</td>
+                <td className="text-gray-600">{new Date(project.createdAt).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>

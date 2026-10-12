@@ -1,0 +1,296 @@
+// App-wide look: Inter, an indigo/slate palette, soft surfaces and pill
+// badges. Layered over Bootstrap 5.3 through its CSS variables plus a few
+// component overrides, so pages keep using plain react-bootstrap markup.
+
+:root {
+  --qa-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --qa-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --qa-primary: #4f46e5;
+  --qa-primary-hover: #4338ca;
+  --qa-primary-soft: #eef2ff;
+  --qa-ink: #0f172a;
+  --qa-text: #1e293b;
+  --qa-muted: #64748b;
+  --qa-subtle: #94a3b8;
+  --qa-border: #e2e8f0;
+  --qa-border-soft: #eef1f6;
+  --qa-canvas: #f6f7fb;
+  --qa-surface: #ffffff;
+  --qa-sidebar: #0f172a;
+  --qa-radius: 10px;
+  --qa-radius-lg: 14px;
+  --qa-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --qa-shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.05);
+
+  --bs-body-font-family: var(--qa-font);
+  --bs-font-monospace: var(--qa-mono);
+  --bs-body-font-size: 0.9375rem;
+  --bs-body-color: var(--qa-text);
+  --bs-body-bg: var(--qa-canvas);
+  --bs-emphasis-color: var(--qa-ink);
+  --bs-secondary-color: var(--qa-muted);
+  --bs-border-color: var(--qa-border);
+  --bs-border-radius: 8px;
+  --bs-border-radius-lg: var(--qa-radius-lg);
+  --bs-primary: var(--qa-primary);
+  --bs-primary-rgb: 79, 70, 229;
+  --bs-link-color: var(--qa-primary);
+  --bs-link-color-rgb: 79, 70, 229;
+  --bs-link-hover-color: var(--qa-primary-hover);
+  --bs-link-hover-color-rgb: 67, 56, 202;
+  --bs-focus-ring-color: rgba(79, 70, 229, 0.2);
+}
+
+body {
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.006em;
+}
+
+h1, h2, h3, h4, .text-20, .text-24, .text-32 {
+  color: var(--qa-ink);
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+code, pre, kbd { font-family: var(--qa-mono); font-size: 0.85em; }
+code { color: #be185d; }
+
+// ---------- Buttons ----------
+.btn {
+  --bs-btn-font-weight: 500;
+  --bs-btn-font-size: 0.875rem;
+  --bs-btn-padding-x: 0.95rem;
+  --bs-btn-padding-y: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s, color 0.15s;
+}
+.btn-primary {
+  --bs-btn-bg: var(--qa-primary);
+  --bs-btn-border-color: var(--qa-primary);
+  --bs-btn-hover-bg: var(--qa-primary-hover);
+  --bs-btn-hover-border-color: var(--qa-primary-hover);
+  --bs-btn-active-bg: #3730a3;
+  --bs-btn-active-border-color: #3730a3;
+  --bs-btn-disabled-bg: #a5b4fc;
+  --bs-btn-disabled-border-color: #a5b4fc;
+  box-shadow: 0 1px 2px rgba(79, 70, 229, 0.25);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--qa-primary);
+  --bs-btn-border-color: #c7d2fe;
+  --bs-btn-hover-bg: var(--qa-primary-soft);
+  --bs-btn-hover-color: var(--qa-primary-hover);
+  --bs-btn-hover-border-color: #a5b4fc;
+  --bs-btn-active-bg: #e0e7ff;
+  --bs-btn-active-color: var(--qa-primary-hover);
+  --bs-btn-active-border-color: #a5b4fc;
+  background: #fff;
+}
+.btn-outline-secondary {
+  --bs-btn-color: var(--qa-text);
+  --bs-btn-border-color: var(--qa-border);
+  --bs-btn-hover-bg: #f8fafc;
+  --bs-btn-hover-color: var(--qa-ink);
+  --bs-btn-hover-border-color: #cbd5e1;
+  background: #fff;
+}
+.btn-link {
+  --bs-btn-color: var(--qa-primary);
+  --bs-btn-hover-color: var(--qa-primary-hover);
+  text-decoration: none;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.btn:focus-visible { box-shadow: 0 0 0 3px var(--bs-focus-ring-color); }
+
+// ---------- Cards / surfaces ----------
+.card {
+  --bs-card-border-color: var(--qa-border-soft);
+  --bs-card-border-radius: var(--qa-radius-lg);
+  --bs-card-inner-border-radius: calc(var(--qa-radius-lg) - 1px);
+  --bs-card-spacer-x: 1.375rem;
+  --bs-card-spacer-y: 1.25rem;
+  box-shadow: var(--qa-shadow-sm);
+}
+
+// Every data table renders as a white, rounded surface.
+.table-responsive {
+  background: var(--qa-surface);
+  border: 1px solid var(--qa-border-soft);
+  border-radius: var(--qa-radius-lg);
+  box-shadow: var(--qa-shadow-sm);
+}
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: #f8fafc;
+  --bs-table-border-color: var(--qa-border-soft);
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  vertical-align: middle;
+
+  > thead th {
+    background: #f8fafc;
+    color: var(--qa-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--qa-border);
+  }
+  > tbody td {
+    padding: 0.8rem 1rem;
+  }
+  > tbody td.text-gray-600 { color: var(--qa-muted); }
+  > tbody > tr:last-child > td { border-bottom: 0; }
+}
+.table-sm {
+  > thead th { padding: 0.5rem 0.75rem; }
+  > tbody td { padding: 0.45rem 0.75rem; }
+}
+// Nested tables (inside expanded rows) stay flat.
+.table-responsive .table-responsive,
+.card .table-responsive {
+  box-shadow: none;
+}
+
+// ---------- Badges: soft pills ----------
+.badge {
+  --bs-badge-font-weight: 600;
+  --bs-badge-font-size: 0.68rem;
+  --bs-badge-padding-x: 0.6em;
+  --bs-badge-padding-y: 0.38em;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+@mixin soft-badge($bg, $fg, $border) {
+  background-color: $bg !important;
+  color: $fg !important;
+  border-color: $border;
+}
+.badge.bg-primary { @include soft-badge(#eef2ff, #4338ca, #e0e7ff); }
+.badge.bg-secondary { @include soft-badge(#f1f5f9, #475569, #e2e8f0); }
+.badge.bg-success { @include soft-badge(#ecfdf5, #047857, #d1fae5); }
+.badge.bg-danger { @include soft-badge(#fef2f2, #b91c1c, #fee2e2); }
+.badge.bg-warning { @include soft-badge(#fffbeb, #b45309, #fef3c7); }
+.badge.bg-info { @include soft-badge(#f0f9ff, #0369a1, #e0f2fe); }
+.badge.bg-dark { @include soft-badge(#f1f5f9, #0f172a, #cbd5e1); }
+
+// ---------- Tabs: underline style ----------
+.nav-tabs {
+  --bs-nav-tabs-border-color: var(--qa-border);
+  --bs-nav-tabs-border-width: 1px;
+  gap: 0.25rem;
+  .nav-link {
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    color: var(--qa-muted);
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 0.7rem 0.9rem;
+    margin-bottom: -1px;
+    &:hover { color: var(--qa-ink); border-bottom-color: #cbd5e1; }
+    &.active {
+      color: var(--qa-primary);
+      background: transparent;
+      border-bottom-color: var(--qa-primary);
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    .nav-link { white-space: nowrap; }
+  }
+}
+
+// ---------- Forms ----------
+.form-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 0.35rem;
+}
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border-color: var(--qa-border);
+  font-size: 0.875rem;
+  padding: 0.55rem 0.8rem;
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(15, 23, 42, 0.03);
+  &::placeholder { color: var(--qa-subtle); }
+  &:focus {
+    border-color: #a5b4fc;
+    box-shadow: 0 0 0 3px var(--bs-focus-ring-color);
+  }
+}
+.form-select { padding-right: 2.25rem; }
+
+// ---------- Alerts / modal / pagination / progress ----------
+.alert {
+  border-radius: var(--qa-radius);
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+}
+.alert-danger { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+
+.modal-content {
+  border: 0;
+  border-radius: var(--qa-radius-lg);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+}
+.modal-header, .modal-footer { border-color: var(--qa-border-soft); padding: 1rem 1.375rem; }
+.modal-body { padding: 1.25rem 1.375rem; }
+.modal-title { font-size: 1.05rem; font-weight: 600; color: var(--qa-ink); }
+.modal-backdrop.show { opacity: 0.35; }
+
+.pagination {
+  --bs-pagination-border-color: var(--qa-border);
+  --bs-pagination-color: var(--qa-text);
+  --bs-pagination-hover-bg: #f8fafc;
+  --bs-pagination-active-bg: var(--qa-primary);
+  --bs-pagination-active-border-color: var(--qa-primary);
+  --bs-pagination-font-size: 0.85rem;
+  gap: 0.25rem;
+  .page-link { border-radius: 8px !important; min-width: 2.1rem; text-align: center; }
+}
+
+.progress {
+  --bs-progress-height: 1rem;
+  --bs-progress-bg: #eef2ff;
+  --bs-progress-bar-bg: var(--qa-primary);
+  --bs-progress-border-radius: 999px;
+  --bs-progress-font-size: 0.65rem;
+}
+
+// Readable status colors on white (Bootstrap's defaults are too light for text).
+.text-warning { color: #b45309 !important; }
+.text-danger { color: #b91c1c !important; }
+.text-success { color: #047857 !important; }
+
+pre.bg-light, .bg-light.border.rounded {
+  background: #f8fafc !important;
+  border-color: var(--qa-border-soft) !important;
+}
+
+.spinner-border { --bs-spinner-border-width: 0.2em; color: var(--qa-primary); }
+
+// ---------- SweetAlert toasts ----------
+.swal2-popup.swal2-toast {
+  font-family: var(--qa-font);
+  border-radius: var(--qa-radius) !important;
+  box-shadow: var(--qa-shadow-md) !important;
+}

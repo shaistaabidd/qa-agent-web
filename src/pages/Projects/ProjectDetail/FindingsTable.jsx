@@ -8,7 +8,10 @@ import { FindingDetail, CATEGORY_VARIANTS } from './FindingDetail'
 
 const SEVERITY_OPTIONS = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map((value) => ({ value, label: value.toLowerCase() }))
 const CATEGORY_OPTIONS = ['error', 'network', 'backend', 'performance', 'memory'].map((value) => ({ value, label: value }))
+const SOURCE_OPTIONS = ['frontend', 'backend', 'network'].map((value) => ({ value, label: value }))
 const ISSUE_STATUS_VARIANTS = { new: 'primary', ongoing: 'secondary', regressed: 'danger', resolved: 'success' }
+// Where the problem lives: the browser, the server, or the request between them.
+const SOURCE_VARIANTS = { frontend: 'info', backend: 'dark', network: 'warning' }
 
 const timeAgo = (iso) => {
   if (!iso) return '—'
@@ -24,7 +27,7 @@ const timeAgo = (iso) => {
 export const FindingsTable = ({ projectId, runId = null }) => {
   const grouped = !runId
   const [page, setPage] = useState(1)
-  const [filters, setFilters] = useState({ severity: '', category: '' })
+  const [filters, setFilters] = useState({ severity: '', category: '', source: '' })
   const [openId, setOpenId] = useState(null)
 
   const { data, loading, error } = useQuery(FINDINGS_FOR_PROJECT, {
@@ -35,6 +38,7 @@ export const FindingsTable = ({ projectId, runId = null }) => {
       runId,
       severity: filters.severity || null,
       category: filters.category || null,
+      source: filters.source || null,
     },
     // Runs report findings in the background, so re-check whenever this opens.
     fetchPolicy: 'cache-and-network',
@@ -46,11 +50,14 @@ export const FindingsTable = ({ projectId, runId = null }) => {
   }
 
   const findings = data?.findingsForProject?.allData || []
-  const columns = grouped ? 7 : 5
+  const columns = grouped ? 8 : 6
 
   return (
     <div>
       <div className="d-flex gap-2 justify-content-end mb-2">
+        <div style={{ width: 160 }}>
+          <SelectField name="source" value={filters.source} onChange={setFilter} options={SOURCE_OPTIONS} blankLabel="All sources" />
+        </div>
         <div style={{ width: 170 }}>
           <SelectField name="severity" value={filters.severity} onChange={setFilter} options={SEVERITY_OPTIONS} blankLabel="All severities" />
         </div>
@@ -72,6 +79,7 @@ export const FindingsTable = ({ projectId, runId = null }) => {
             <tr>
               <th>{grouped ? 'Issue' : 'Finding'}</th>
               <th>Severity</th>
+              <th>Source</th>
               <th>Category</th>
               {grouped && <th>Status</th>}
               {grouped && <th>Runs</th>}
@@ -91,6 +99,9 @@ export const FindingsTable = ({ projectId, runId = null }) => {
                     <SeverityBadge severity={finding.severity} />
                   </td>
                   <td>
+                    <Badge bg={SOURCE_VARIANTS[finding.source] || 'secondary'}>{finding.source}</Badge>
+                  </td>
+                  <td>
                     {finding.category ? <Badge bg={CATEGORY_VARIANTS[finding.category] || 'secondary'}>{finding.category}</Badge> : '—'}
                   </td>
                   {grouped && (
@@ -103,8 +114,8 @@ export const FindingsTable = ({ projectId, runId = null }) => {
                   <td>{finding.clickupTaskId ? 'Posted' : '—'}</td>
                 </tr>
                 {openId === finding.id && (
-                  <tr>
-                    <td colSpan={columns} className="bg-white">
+                  <tr className="qa-detail-row">
+                    <td colSpan={columns}>
                       <FindingDetail finding={finding} />
                     </td>
                   </tr>

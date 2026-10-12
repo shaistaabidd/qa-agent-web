@@ -155,8 +155,8 @@ export const Runs = ({ project }) => {
                       <td>{run.finishedAt ? new Date(run.finishedAt).toLocaleString() : '—'}</td>
                     </tr>
                     {openRunId === run.id && (
-                      <tr>
-                        <td colSpan={5} className="bg-light">
+                      <tr className="qa-detail-row">
+                        <td colSpan={5}>
                           <RunDetail runId={run.id} projectId={project.id} />
                         </td>
                       </tr>

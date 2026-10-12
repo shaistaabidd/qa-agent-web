@@ -4,6 +4,8 @@ export const FINDINGS_SUMMARY = gql`
   query FindingsSummary($projectId: ID!) {
     findingsSummary(projectId: $projectId) {
       total
+      resolved
+      totalFindings
       postedToClickUp
       pendingClickUp
       bySeverity { severity count }

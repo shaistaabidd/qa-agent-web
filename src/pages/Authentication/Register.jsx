@@ -18,7 +18,8 @@ export const Register = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="text-18 semibold mb-3">Create your account</div>
+      <div className="qa-auth-title">Create your account</div>
+      <div className="qa-auth-subtitle">Set up QA Agent and start testing your app in minutes.</div>
       <ErrorComponent error={error} />
       <InputField
         label="Email"

@@ -1,7 +1,12 @@
+import { Icon } from './Icon'
+
 export const EmptyState = ({ title = 'Nothing here yet', description = '' }) => {
   return (
-    <div className="text-center py-5 text-gray-600">
-      <div className="text-16 semibold mb-1">{title}</div>
+    <div className="qa-empty">
+      <div className="qa-empty-icon">
+        <Icon name="inbox" size={22} strokeWidth={1.75} />
+      </div>
+      <div className="qa-empty-title">{title}</div>
       {description && <div className="text-14 regular">{description}</div>}
     </div>
   )
