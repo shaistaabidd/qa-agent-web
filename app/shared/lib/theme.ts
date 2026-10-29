@@ -3,7 +3,7 @@ import { useSyncExternalStore } from 'react';
 export type ThemePreference = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
 
-export const THEME_STORAGE_KEY = 'wa-theme';
+export const THEME_STORAGE_KEY = 'qa-agent-theme';
 
 const listeners = new Set<() => void>();
 

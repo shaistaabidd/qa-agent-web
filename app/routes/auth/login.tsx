@@ -4,7 +4,7 @@ import type { Route } from './+types/login';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Login | SaaS Temp' },
+    { title: 'Login | QA Agent' },
     {
       name: 'description',
       content: 'Please enter your credentials to continue.',

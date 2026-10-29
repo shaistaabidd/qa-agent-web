@@ -4,7 +4,7 @@ import type { Route } from './+types/email-log-detail';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Email Log | SaaS Temp' },
+    { title: 'Email Log | QA Agent' },
     {
       name: 'description',
       content: 'Email log details.',

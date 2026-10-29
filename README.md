@@ -1,87 +1,57 @@
-# Welcome to React Router!
+# qa-agent-web
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Web app for the QA Agent: connect an app's GitHub repo, approve what to test, store test credentials, run the Playwright worker, and review the issues it finds. It talks to `qa-agent-backend` over GraphQL.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+Built on the `saas-setup` boilerplate: React Router 8 (framework mode, SSR), React 19, TypeScript strict, Tailwind v4 with the in-repo design system (`app/shared/ui`), Apollo Client, zustand, TanStack Form and zod, Playwright.
 
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
+## Run
 
 ```bash
-npm install --legacy-peer-deps
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
+npm install --legacy-peer-deps   # --legacy-peer-deps is required (see .npmrc)
+cp .env.example .env             # set VITE_APP_API_URL to the API, e.g. http://localhost:3001
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+| Script                            | What it does                      |
+| --------------------------------- | --------------------------------- |
+| `npm run typecheck`               | `react-router typegen` then `tsc` |
+| `npm run lint` / `npm run format` | ESLint / Prettier check           |
+| `npm run build` / `npm run start` | Production build / serve it (SSR) |
+| `npm run e2e`                     | Playwright (see `e2e/README.md`)  |
 
-## Building for Production
+Husky runs lint-staged on commit and `typecheck` on push.
 
-Create a production build:
+## Environment
 
-```bash
-npm run build
-```
+| Variable           | Purpose                                                             |
+| ------------------ | ------------------------------------------------------------------- |
+| `VITE_APP_API_URL` | Base URL of `qa-agent-backend`; the app posts GraphQL to `/graphql` |
 
-## Deployment
+Vite inlines `VITE_*` values at build time, so set them in the build environment (including Docker and Heroku).
 
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+## Layout
 
 ```
-├── package.json
-├── package-lock.json
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+app/
+  routes.ts, routing/*.routes.ts   route config, one file per group
+  routes/                          thin route modules: meta() + a feature page
+  features/<name>/                 one folder per feature (page, components/, hooks/, types.ts)
+  shell/                           root, auth and app layouts, sidebar, error boundaries
+  shared/ui, shared/lib            design-system primitives and shared helpers
+  providers/apollo                 Apollo client, links, central error handling
+  graphql/                         operations and shared selections (fragments.ts)
+e2e/                               Playwright specs, page objects and a mocked GraphQL backend
+specs/                             spec-driven-development templates
 ```
 
-## Styling
+Project rules live in `.claude/rules` (mirrored in `.cursor/rules`): feature folders, reuse of `shared/ui`, design tokens, GraphQL operation naming, and e2e conventions.
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+## Auth and access
 
----
+Sign-in is the boilerplate's: email and password, then a one-time code, or Google. The session token lives in `react-secure-storage`, a `storage` listener signs out other tabs, and a 401 or `UNAUTHENTICATED` response ends the session. Route guards (`requireAuth`, `requireRoles`, `requireGuest`, `requireSetup`) run in `clientLoader`, so a protected page shows a loading screen until the app hydrates; the API enforces all authorization.
 
-Built with ❤️ using React Router.
+Roles are the API's: `user` and `super_admin`. Super admins also get the email log, SMS log and user-management pages.
+
+## Deploy
+
+`Dockerfile` builds the SSR app (`npm run build`) and serves it with `react-router-serve`, which reads `PORT`. Heroku's Node buildpack runs `npm start` the same way.

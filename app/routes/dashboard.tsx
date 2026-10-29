@@ -4,7 +4,7 @@ import type { Route } from './+types/dashboard';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Dashboard | SaaS Temp' },
+    { title: 'Dashboard | QA Agent' },
     {
       name: 'description',
       content: 'Your dashboard.',

@@ -9,7 +9,7 @@ import type { Route } from './+types/invite-expired';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Invite Expired | SaaS Temp' },
+    { title: 'Invite Expired | QA Agent' },
     {
       name: 'description',
       content: 'This invitation link is invalid or has expired.',

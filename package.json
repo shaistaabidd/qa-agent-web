@@ -1,5 +1,5 @@
 {
-  "name": "saas-setup",
+  "name": "qa-agent-web",
   "private": true,
   "type": "module",
   "sideEffects": [

@@ -4,7 +4,7 @@ import type { Route } from './+types/google-callback';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Signing in with Google | SaaS Temp' },
+    { title: 'Signing in with Google | QA Agent' },
     { name: 'description', content: 'Finishing your Google sign-in.' },
   ];
 }

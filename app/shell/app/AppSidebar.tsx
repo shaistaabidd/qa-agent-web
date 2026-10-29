@@ -23,7 +23,6 @@ import {
 } from '@/shared/ui/sidebar';
 import { Typography } from '@/shared/ui/Typography';
 
-import { CreditsAvailable } from './components/CreditsAvailable';
 import { LogoutConfirmDialog } from './components/LogoutConfirmDialog';
 import { DASHBOARD_PATH, getAppNavGroups, getAppProfile, SETTINGS_PATH } from './constants';
 
@@ -111,7 +110,6 @@ export function AppSidebar() {
         </SidebarHeader>
         <SidebarSeparator />
         <Profile />
-        <CreditsAvailable />
         <SidebarSeparator />
         <SidebarContent>
           {navGroups.map((group) => (

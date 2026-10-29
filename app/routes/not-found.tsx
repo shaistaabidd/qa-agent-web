@@ -11,7 +11,7 @@ clientLoader.hydrate = true as const;
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Page Not Found | SaaS Temp' },
+    { title: 'Page Not Found | QA Agent' },
     {
       name: 'description',
       content: "The page you're looking for doesn't exist or may have moved.",

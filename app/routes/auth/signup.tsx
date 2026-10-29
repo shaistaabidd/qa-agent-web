@@ -4,7 +4,7 @@ import type { Route } from './+types/signup';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Sign Up | SaaS Temp' },
+    { title: 'Sign Up | QA Agent' },
     {
       name: 'description',
       content: 'Create your account.',

@@ -4,7 +4,7 @@ import type { Route } from './+types/reset-password';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Reset Password | SaaS Temp' },
+    { title: 'Reset Password | QA Agent' },
     {
       name: 'description',
       content: 'Create a new password for your account.',

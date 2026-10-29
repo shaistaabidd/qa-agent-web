@@ -66,12 +66,7 @@ The real-session specs skip themselves when no session has been saved.
 Some cases are marked `test.fixme` because the app changed under them. They run again when you
 remove the line, and each one carries its reason:
 
-- **Legacy roles** (`team_member`, `client`, `practitioner`, `super_clinic_admin`): the login query no
-  longer selects `onboardingCompleted`, `subscriptionPaid`, `documentSigned` or `calendarLink`, so
-  these roles are sent to `/profile-setup`. The shared reason is in `fixtures/legacyRoles.ts`. This
-  covers pricing, payment result, sign document, add calendar and parts of the role and routing specs.
 - **Impersonation**: the co-admin row menu has no Impersonate action.
-- **Client profile setup**: it saves nothing and returns to `/profile-setup`.
 
 Only `super_admin` and `user` can sign in and reach the app today, so mocked specs use those roles.
 

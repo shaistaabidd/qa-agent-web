@@ -5,15 +5,11 @@ export const appRoutes = [
     layout('shell/app/AppErrorLayout.tsx', [
       route('dashboard', 'routes/dashboard.tsx'),
       route('settings', 'routes/settings.tsx'),
-      layout('shell/app/AdminLayout.tsx', [
-        route('crud', 'routes/crud.tsx'),
-        route('resources', 'routes/resources.tsx'),
-        layout('shell/app/SuperAdminLayout.tsx', [
-          route('email-logs', 'routes/email-logs.tsx'),
-          route('email-logs/:id', 'routes/email-log-detail.tsx'),
-          route('sms-logs', 'routes/sms-logs.tsx'),
-          route('co-admin', 'routes/co-admins.tsx'),
-        ]),
+      layout('shell/app/SuperAdminLayout.tsx', [
+        route('email-logs', 'routes/email-logs.tsx'),
+        route('email-logs/:id', 'routes/email-log-detail.tsx'),
+        route('sms-logs', 'routes/sms-logs.tsx'),
+        route('co-admin', 'routes/co-admins.tsx'),
       ]),
     ]),
   ]),

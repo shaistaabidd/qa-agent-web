@@ -4,7 +4,7 @@ import type { Route } from './+types/reset-password.success';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Password Reset Successfully | SaaS Temp' },
+    { title: 'Password Reset Successfully | QA Agent' },
     {
       name: 'description',
       content:

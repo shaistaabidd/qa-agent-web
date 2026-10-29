@@ -1,5 +1,3 @@
-import '@/features/onboarding';
-
 import { useEffect } from 'react';
 
 import { subscribeToAuthStorage, useAuthBootstrap, useAuthStore } from '@/features/auth';

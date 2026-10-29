@@ -4,7 +4,7 @@ import type { Route } from './+types/sms-logs';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'SMS Logs | SaaS Temp' },
+    { title: 'SMS Logs | QA Agent' },
     {
       name: 'description',
       content: 'Review text messages sent from the platform.',

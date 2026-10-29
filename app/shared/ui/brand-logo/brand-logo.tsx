@@ -2,7 +2,7 @@ import { CubeIcon } from '@phosphor-icons/react/Cube';
 
 import { cn } from '@/shared/lib/utils';
 
-export const APP_NAME = 'SaaS Temp';
+export const APP_NAME = 'QA Agent';
 
 export function BrandLogo({ className }: { className?: string }) {
   return (

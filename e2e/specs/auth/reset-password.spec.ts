@@ -1,5 +1,4 @@
 import { expect, test } from '../../fixtures';
-import { LEGACY_ROLE_SETUP_REDIRECT } from '../../fixtures/legacyRoles';
 import { buildUser } from '../../fixtures/mockUsers';
 
 const EMAIL = 'e2e+super_admin@example.test';
@@ -55,28 +54,27 @@ test.describe('Reset password', () => {
     });
   });
 
-  test('a client with a signed document is signed in to the dashboard after resetting', async ({
+  test('a user is signed in to the dashboard after resetting', async ({
     appShell,
     forgotPasswordPage,
     mockApi,
     otpPage,
     resetPasswordPage,
   }) => {
-    test.fixme(true, LEGACY_ROLE_SETUP_REDIRECT);
     await mockApi({
       ...resetHandlers,
-      SetPassword: () => ({ setPassword: { token: 'e2e-token', user: buildUser('client') } }),
+      SetPassword: () => ({ setPassword: { token: 'e2e-token', user: buildUser('user') } }),
       ValidateOtp: () => ({
         validateOtp: {
           resetPasswordToken: RESET_TOKEN,
           token: null,
-          user: buildUser('client'),
+          user: buildUser('user'),
         },
       }),
     });
 
     await forgotPasswordPage.goto();
-    await forgotPasswordPage.submitEmail('e2e+client@example.test');
+    await forgotPasswordPage.submitEmail('e2e+user@example.test');
     await otpPage.expectLoaded();
     await otpPage.submit('123456');
     await resetPasswordPage.submit(STRONG_PASSWORD);

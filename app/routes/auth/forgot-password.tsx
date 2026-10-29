@@ -4,7 +4,7 @@ import type { Route } from './+types/forgot-password';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Forgot Password | SaaS Temp' },
+    { title: 'Forgot Password | QA Agent' },
     {
       name: 'description',
       content:

@@ -1,6 +1,6 @@
 {
-  "name": "SaaS Temp",
-  "short_name": "SaaS Temp",
+  "name": "QA Agent",
+  "short_name": "QA Agent",
   "icons": [
     { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }

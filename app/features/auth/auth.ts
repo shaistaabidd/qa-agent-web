@@ -23,7 +23,6 @@ export const RESET_PASSWORD_PATH = '/reset-password';
 export const RESET_PASSWORD_SUCCESS_PATH = '/reset-password/success';
 export const SET_PASSWORD_PATH = SETUP_PATHS.setPassword;
 export const INVITE_EXPIRED_PATH = SETUP_PATHS.inviteExpired;
-export const CONNECT_RETURN_PATH = '/connect/return';
 
 export function tokenFromResetUrl(resetUrl: string) {
   try {
@@ -55,22 +54,7 @@ export function pathAfterAuth(user: AuthGraphQLUser | null | undefined) {
 }
 
 export function toAppRole(role: string | null) {
-  switch (normalizeUserType(role)) {
-    case 'super_admin':
-    case 'team_member':
-      return 'admin' as const;
-    case 'user':
-      return 'user' as const;
-    case 'super_clinic_admin':
-    case 'clinic_admin':
-      return 'pharmacy' as const;
-    case 'practitioner':
-      return 'provider' as const;
-    case 'client':
-      return 'patient' as const;
-    default:
-      return 'patient' as const;
-  }
+  return normalizeUserType(role) === 'super_admin' ? ('admin' as const) : ('user' as const);
 }
 
 export function displayName(user: {

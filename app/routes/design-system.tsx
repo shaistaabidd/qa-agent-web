@@ -4,10 +4,10 @@ import type { Route } from './+types/design-system';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Design System | SaaS Temp' },
+    { title: 'Design System | QA Agent' },
     {
       name: 'description',
-      content: 'SaaS Temp design system',
+      content: 'QA Agent design system',
     },
   ];
 }

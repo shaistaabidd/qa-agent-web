@@ -1,7 +1,7 @@
 import { expect, test } from '../../fixtures';
 import { featureFlags } from '../../fixtures/featureFlags';
 import { GraphqlFailure, type GraphqlMock } from '../../fixtures/graphql';
-import { buildFetchedUser, buildUser } from '../../fixtures/mockUsers';
+import { buildUser } from '../../fixtures/mockUsers';
 import type { MockSession } from '../../fixtures/session';
 import type { SettingsPage } from '../../page-object/SettingsPage';
 
@@ -19,7 +19,7 @@ function accountApi(
 ) {
   const { changePasswordOk = true, emailChangeOtp = true, emailCodeOk = true } = overrides;
   let pendingEmail = overrides.pendingEmail ?? '';
-  let account = buildFetchedUser('super_admin', {
+  let account = buildUser('super_admin', {
     featureFlags: featureFlags({ emailChangeOtpEnabled: emailChangeOtp }),
     email: 'ada@example.test',
     firstName: 'Ada',

@@ -2,16 +2,10 @@ import type { AuthGraphQLUser, OnboardingStepName, UserRole } from '@/features/a
 import { normalizeUserType } from '@/features/auth/model/types';
 
 export const SETUP_PATHS = {
-  addCalendar: '/add-calendar',
   inviteExpired: '/invite-expired',
   onboardingStep1: '/onboarding/step-1',
   onboardingStep2: '/onboarding/step-2',
-  paymentFailed: '/payment-failed',
-  paymentSuccess: '/payment-success',
-  pricing: '/pricing',
-  profileSetup: '/profile-setup',
   setPassword: '/set-password',
-  signDocument: '/sign-document',
 } as const;
 
 /** Where each saas-api onboarding step is completed. */
@@ -21,7 +15,7 @@ export const ONBOARDING_STEP_PATHS: Record<OnboardingStepName, string> = {
 };
 
 /**
- * The saas-api onboarding page the user must finish next: the first incomplete step, in order,
+ * The onboarding page the user must finish next: the first incomplete step, in order,
  * as the API reports it (`onboarding.currentStep`). Null when onboarding is done or doesn't apply.
  * A step this app doesn't know yet falls back to the first known incomplete step, so the user stays gated.
  */
@@ -57,76 +51,13 @@ function isCompletedOnboardingStep(user: AuthGraphQLUser, pathname: string) {
   );
 }
 
-export function needsOnboarding(user: AuthGraphQLUser) {
-  const role = normalizeUserType(user.userType);
-  // saas-api roles onboard through its steps (onboardingStepPath); super admins never do.
-  if (role === 'super_admin' || role === 'user') {
-    return false;
-  }
-
-  return !user.onboardingCompleted;
-}
-
-export function needsSubscription(user: AuthGraphQLUser) {
-  const role = normalizeUserType(user.userType);
-  if (role === 'super_clinic_admin') {
-    return !user.subscriptionPaid;
-  }
-
-  return false;
-}
-
-export function needsDocumentSigning(user: AuthGraphQLUser) {
-  const role = normalizeUserType(user.userType);
-  if (
-    role === 'client' ||
-    role === 'practitioner' ||
-    role === 'super_clinic_admin' ||
-    role === 'clinic_admin'
-  ) {
-    return !user.documentSigned;
-  }
-
-  return false;
-}
-
-export function needsCalendarSetup(user: AuthGraphQLUser) {
-  const role = normalizeUserType(user.userType);
-  if (role === 'practitioner') {
-    return !user.calendarLink;
-  }
-
-  return false;
-}
-
+/** The page a signed-in user must finish before using the app, or null. Super admins never onboard. */
 export function getNextRequiredStep(user: AuthGraphQLUser): string | null {
-  const role = normalizeUserType(user.userType);
-  if (role === 'super_admin') {
+  if (normalizeUserType(user.userType) === 'super_admin') {
     return null;
   }
 
-  const onboardingStep = onboardingStepPath(user);
-  if (onboardingStep) {
-    return onboardingStep;
-  }
-
-  if (needsOnboarding(user)) {
-    return SETUP_PATHS.profileSetup;
-  }
-
-  if (needsSubscription(user)) {
-    return SETUP_PATHS.pricing;
-  }
-
-  if (needsDocumentSigning(user)) {
-    return SETUP_PATHS.signDocument;
-  }
-
-  if (needsCalendarSetup(user)) {
-    return SETUP_PATHS.addCalendar;
-  }
-
-  return null;
+  return onboardingStepPath(user) ?? null;
 }
 
 export function pathAfterGraphQLAuth(user: AuthGraphQLUser) {
@@ -134,22 +65,13 @@ export function pathAfterGraphQLAuth(user: AuthGraphQLUser) {
 }
 
 export function isSetupPath(pathname: string) {
-  return (
-    pathname === SETUP_PATHS.onboardingStep1 ||
-    pathname === SETUP_PATHS.onboardingStep2 ||
-    pathname === SETUP_PATHS.profileSetup ||
-    pathname === SETUP_PATHS.pricing ||
-    pathname === SETUP_PATHS.signDocument ||
-    pathname === SETUP_PATHS.addCalendar ||
-    pathname === SETUP_PATHS.paymentSuccess ||
-    pathname === SETUP_PATHS.paymentFailed
-  );
+  return pathname === SETUP_PATHS.onboardingStep1 || pathname === SETUP_PATHS.onboardingStep2;
 }
 
 export function allowedPathForIncompleteSetup(user: AuthGraphQLUser, pathname: string): boolean {
   const next = getNextRequiredStep(user);
   if (!next) {
-    return !isSetupPath(pathname) || pathname === SETUP_PATHS.paymentSuccess;
+    return !isSetupPath(pathname);
   }
 
   if (pathname === next) {
@@ -157,18 +79,7 @@ export function allowedPathForIncompleteSetup(user: AuthGraphQLUser, pathname: s
   }
 
   // Going back to edit an earlier onboarding step is fine; skipping ahead is not.
-  if (onboardingStepPath(user) === next && isCompletedOnboardingStep(user, pathname)) {
-    return true;
-  }
-
-  if (
-    next === SETUP_PATHS.pricing &&
-    (pathname === SETUP_PATHS.paymentSuccess || pathname === SETUP_PATHS.paymentFailed)
-  ) {
-    return true;
-  }
-
-  return false;
+  return isCompletedOnboardingStep(user, pathname);
 }
 
 export function roleLandingPath(_role: UserRole | null) {
