@@ -1,7 +1,7 @@
 import type { CardMediaVariant } from './types';
 
 export const cardClass = [
-  'group/card relative flex flex-col overflow-hidden rounded-[16px] border border-subtle bg-bg-surface text-fg-default shadow-sm transition-colors',
+  'group/card relative flex flex-col rounded-[16px] border border-subtle bg-bg-surface text-fg-default shadow-sm transition-colors',
   '[--card-spacing:16px] data-[size=sm]:[--card-spacing:12px] data-[size=lg]:[--card-spacing:24px]',
   'data-[variant=flat]:shadow-none',
   'data-[tone=danger]:border-danger',
