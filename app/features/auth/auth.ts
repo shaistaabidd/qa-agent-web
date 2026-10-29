@@ -3,7 +3,7 @@ import { redirect, redirectDocument } from 'react-router';
 import { useAuthStore } from '@/features/auth/model/authStore';
 import type { AuthGraphQLUser } from '@/features/auth/model/types';
 import { normalizeUserType } from '@/features/auth/model/types';
-import { LOGIN_PATH } from '@/features/auth/paths';
+import { HOME_PATH, LOGIN_PATH } from '@/features/auth/paths';
 import { getLoginEmail } from '@/features/auth/utils/flowStorage';
 import {
   allowedPathForIncompleteSetup,
@@ -16,8 +16,7 @@ import { Role } from '@/shared/lib/constants';
 
 export { Role };
 
-export { LOGIN_PATH };
-export const DASHBOARD_PATH = '/dashboard';
+export { HOME_PATH, LOGIN_PATH };
 export const OTP_PATH = '/otp';
 export const RESET_PASSWORD_PATH = '/reset-password';
 export const RESET_PASSWORD_SUCCESS_PATH = '/reset-password/success';
@@ -42,12 +41,12 @@ export function pathFromResetUrl(resetUrl: string) {
 }
 
 export function homePathForRole(_role: string | null) {
-  return DASHBOARD_PATH;
+  return HOME_PATH;
 }
 
 export function pathAfterAuth(user: AuthGraphQLUser | null | undefined) {
   if (!user?.userType) {
-    return DASHBOARD_PATH;
+    return HOME_PATH;
   }
 
   return pathAfterGraphQLAuth(user);

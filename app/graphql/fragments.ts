@@ -139,14 +139,75 @@ export const connectionFields = `
   totalPages
 `;
 
-export const resourceFields = `
-  category
+/** A project as the list and the project header show it. `myRole` gates the admin-only controls. */
+export const projectFields = `
   createdAt
-  description
+  githubInstalled
   id
-  isActive
-  pdfFileUrl
-  resourceType
+  myRole
+  name
+  repoConnected
+  repoFullName
+  targetUrl
+`;
+
+export const scopeFeatureFields = `
+  approved
+  createdAt
+  id
+  name
+  route
+  source
+`;
+
+/** A run row: enough for the queue and for polling its status. */
+export const runListFields = `
+  createdAt
+  finishedAt
+  id
+  roleName
+  scopeFeature {
+    id
+    name
+  }
+  startedAt
+  status
+`;
+
+/** One run with everything the worker recorded: summary, network log and audit trail. */
+export const runFields = `
+  ${runListFields}
+  auditLogEntries {
+    actionTaken
+    createdAt
+    id
+    targetElement
+  }
+  networkLog
+  summary
+`;
+
+/** An issue row. The evidence (`details`, steps, screenshot) is only selected on one finding. */
+export const findingListFields = `
+  category
+  clickupTaskId
+  createdAt
+  firstSeenAt
+  id
+  issueStatus
+  lastSeenAt
+  runId
+  severity
+  source
+  timesSeen
   title
-  videoLink
+`;
+
+/** One finding with its evidence. */
+export const findingFields = `
+  ${findingListFields}
+  details
+  fingerprint
+  reproSteps
+  screenshotUrl
 `;

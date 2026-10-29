@@ -1,4 +1,4 @@
-import { DASHBOARD_PATH } from '@/features/auth';
+import { HOME_PATH } from '@/features/auth';
 import { CO_ADMINS_PATH } from '@/features/co-admins';
 import { EMAIL_LOGS_PATH } from '@/features/email-logs';
 import { SMS_LOGS_PATH } from '@/features/sms-logs';
@@ -10,7 +10,7 @@ export type AppRole = 'admin' | 'user';
 
 export const SETTINGS_PATH = '/settings';
 export const LOGIN_PATH = '/login';
-export { DASHBOARD_PATH };
+export { HOME_PATH };
 
 const APP_PROFILES = {
   admin: { name: 'Admin', role: 'Super Admin' },
@@ -19,7 +19,7 @@ const APP_PROFILES = {
 
 const USER_NAV_GROUPS: AppNavGroup[] = [
   {
-    items: [{ icon: 'dashboard', id: 'dashboard', label: 'Dashboard', to: DASHBOARD_PATH }],
+    items: [{ icon: 'dashboard', id: 'projects', label: 'Projects', to: HOME_PATH }],
   },
 ];
 

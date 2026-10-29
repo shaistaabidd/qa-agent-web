@@ -34,31 +34,27 @@ test.describe('Impersonation (super admin)', () => {
     await coAdminsPage.expectRowsSettled();
   });
 
-  test('impersonating a user lands on their dashboard', async ({
+  test('impersonating a user lands on their projects page', async ({
     appShell,
     coAdminsPage,
-    dashboardPage,
+    homePage,
   }) => {
     await coAdminsPage.chooseRowAction('Ada Lovelace', 'Impersonate');
 
-    await dashboardPage.expectPersonalView();
-    await dashboardPage.expectNavLinks(['Dashboard'], ['Email Logs', 'Users']);
+    await homePage.expectLoaded();
+    await homePage.expectNavLinks(['Projects'], ['Email Logs', 'Users']);
     await appShell.expectImpersonating('Ada Lovelace');
     expect(mock.callsTo('ImpersonateUser')[0]?.variables).toMatchObject({ userId: 'ada' });
   });
 
-  test('Back to Admin restores the admin session', async ({
-    appShell,
-    coAdminsPage,
-    dashboardPage,
-  }) => {
+  test('Back to Admin restores the admin session', async ({ appShell, coAdminsPage, homePage }) => {
     await coAdminsPage.chooseRowAction('Ada Lovelace', 'Impersonate');
     await appShell.expectImpersonating('Ada Lovelace');
 
     await appShell.backToAdmin();
 
-    await dashboardPage.expectAdminView();
-    await dashboardPage.expectNavLinks(['Email Logs', 'Users'], []);
+    await homePage.expectLoaded();
+    await homePage.expectNavLinks(['Email Logs', 'Users'], []);
     await appShell.expectNotImpersonating();
   });
 

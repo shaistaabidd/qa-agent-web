@@ -13,11 +13,11 @@ const ADMIN_PAGES = [
 ];
 
 test.describe('Admin shell (signed in as co-admin)', () => {
-  test('lands on the dashboard with the admin navigation', async ({ appShell }) => {
-    await appShell.open('/dashboard');
+  test('lands on the projects page with the admin navigation', async ({ appShell }) => {
+    await appShell.open('/projects');
 
-    await appShell.expectOnPage('/dashboard');
-    await expect(appShell.navLink('Dashboard')).toBeVisible();
+    await appShell.expectOnPage('/projects');
+    await expect(appShell.navLink('Projects')).toBeVisible();
   });
 
   for (const { label, path } of ADMIN_PAGES) {
@@ -30,7 +30,7 @@ test.describe('Admin shell (signed in as co-admin)', () => {
   }
 
   test('the Users page is reachable only when the nav shows it', async ({ appShell }) => {
-    await appShell.open('/dashboard');
+    await appShell.open('/projects');
     const hasNavLink = await appShell.navLink('Users').isVisible();
 
     await appShell.open('/co-admin');
@@ -45,15 +45,15 @@ test.describe('Admin shell (signed in as co-admin)', () => {
   test('does not show login to a signed-in user', async ({ appShell }) => {
     await appShell.open('/login');
 
-    await appShell.expectPath('/dashboard');
+    await appShell.expectPath('/projects');
   });
 
-  test('logs out and blocks the dashboard afterwards', async ({ appShell, loginPage }) => {
-    await appShell.open('/dashboard');
+  test('logs out and blocks the projects page afterwards', async ({ appShell, loginPage }) => {
+    await appShell.open('/projects');
 
     await appShell.logout();
-    await appShell.open('/dashboard');
+    await appShell.open('/projects');
 
-    await loginPage.expectRedirectTo('/dashboard');
+    await loginPage.expectRedirectTo('/projects');
   });
 });

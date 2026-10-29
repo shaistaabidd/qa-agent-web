@@ -10,12 +10,12 @@ type Access = {
 // /email-logs, /sms-logs and /co-admin need super_admin.
 const ACCESS: Access[] = [
   {
-    allowed: ['/dashboard', '/settings', '/email-logs', '/sms-logs', '/co-admin'],
+    allowed: ['/projects', '/settings', '/email-logs', '/sms-logs', '/co-admin'],
     blocked: [],
     role: 'super_admin',
   },
   {
-    allowed: ['/dashboard', '/settings'],
+    allowed: ['/projects', '/settings'],
     blocked: ['/email-logs', '/sms-logs', '/co-admin'],
     role: 'user',
   },

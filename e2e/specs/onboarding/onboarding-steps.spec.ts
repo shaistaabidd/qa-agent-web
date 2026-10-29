@@ -27,7 +27,7 @@ const afterPhone = buildUser('user', {
 test.describe('Onboarding steps', () => {
   // Names that are inherited object members, empty, or just wrong must not read as a known step.
   for (const unknown of ['step3', 'constructor', 'toString', '__proto__', 'STEP1', '']) {
-    test(`an unknown step ${JSON.stringify(unknown)} keeps an unfinished user out of the dashboard`, async ({
+    test(`an unknown step ${JSON.stringify(unknown)} keeps an unfinished user out of the projects page`, async ({
       appShell,
       onboardingPage,
       session,
@@ -39,7 +39,7 @@ test.describe('Onboarding steps', () => {
       });
       await onboardingPage.expectOnStep('step1', 1);
 
-      for (const path of ['/dashboard', '/settings', '/onboarding/step-2']) {
+      for (const path of ['/projects', '/settings', '/onboarding/step-2']) {
         await appShell.open(path);
         await onboardingPage.expectOnStep('step1', 1);
       }
@@ -69,8 +69,8 @@ test.describe('Onboarding steps', () => {
     await onboardingPage.expectMissing('Add your first name and last name to continue.');
   });
 
-  test('saving step 1 moves to step 2, and saving step 2 opens the dashboard', async ({
-    dashboardPage,
+  test('saving step 1 moves to step 2, and saving step 2 opens the projects page', async ({
+    homePage,
     onboardingPage,
     session,
   }) => {
@@ -85,7 +85,7 @@ test.describe('Onboarding steps', () => {
     await onboardingPage.expectStepDone('Your name');
     await onboardingPage.savePhone('2015550123');
 
-    await dashboardPage.expectPersonalView();
+    await homePage.expectLoaded();
     expect(mock.callsTo('SaveOnboardingStep').map((call) => call.variables)).toEqual([
       { attributes: { firstName: 'Grace', lastName: 'Hopper' } },
       { attributes: { phone: '+12015550123' } },
@@ -112,7 +112,7 @@ test.describe('Onboarding steps', () => {
   }
 
   test('a double click on Next and on Finish each send one save', async ({
-    dashboardPage,
+    homePage,
     onboardingPage,
     session,
   }) => {
@@ -130,7 +130,7 @@ test.describe('Onboarding steps', () => {
 
     await onboardingPage.phone.fill('2015550123');
     await onboardingPage.doubleClickFinish();
-    await dashboardPage.expectPersonalView();
+    await homePage.expectLoaded();
     expect(mock.callsTo('SaveOnboardingStep')).toHaveLength(2);
   });
 
@@ -143,7 +143,7 @@ test.describe('Onboarding steps', () => {
     await onboardingPage.expectMissing('Add your phone number to continue.');
   });
 
-  test('an unfinished user lands on their step right after login, not the dashboard', async ({
+  test('an unfinished user lands on their step right after login, not the projects page', async ({
     onboardingPage,
     session,
   }) => {
@@ -175,21 +175,21 @@ test.describe('Onboarding steps', () => {
       buildUser('user', { onboarding: onboarding({ step2: ['phone'] }), phone: null }),
     );
 
-    await appShell.open('/dashboard');
+    await appShell.open('/projects');
 
     await onboardingPage.expectOnStep('step2', 2);
   });
 
   test('a finished user can no longer open an onboarding step', async ({
     appShell,
-    dashboardPage,
+    homePage,
     session,
   }) => {
     await session.signInAs(buildUser('user'));
 
     await appShell.open('/onboarding/step-1');
 
-    await dashboardPage.expectPersonalView();
+    await homePage.expectLoaded();
   });
 
   test('Back on step 2 returns to step 1 with the saved name, and Next comes back', async ({

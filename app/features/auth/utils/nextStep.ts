@@ -1,5 +1,6 @@
 import type { AuthGraphQLUser, OnboardingStepName, UserRole } from '@/features/auth/model/types';
 import { normalizeUserType } from '@/features/auth/model/types';
+import { HOME_PATH } from '@/features/auth/paths';
 
 export const SETUP_PATHS = {
   inviteExpired: '/invite-expired',
@@ -61,7 +62,7 @@ export function getNextRequiredStep(user: AuthGraphQLUser): string | null {
 }
 
 export function pathAfterGraphQLAuth(user: AuthGraphQLUser) {
-  return getNextRequiredStep(user) ?? '/dashboard';
+  return getNextRequiredStep(user) ?? HOME_PATH;
 }
 
 export function isSetupPath(pathname: string) {
@@ -83,5 +84,5 @@ export function allowedPathForIncompleteSetup(user: AuthGraphQLUser, pathname: s
 }
 
 export function roleLandingPath(_role: UserRole | null) {
-  return '/dashboard';
+  return HOME_PATH;
 }

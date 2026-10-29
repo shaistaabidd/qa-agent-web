@@ -122,7 +122,7 @@ test.describe('Sign in with Google', () => {
 
     await page.goto('/auth/google/callback#code=one-time-code');
 
-    await loginPage.expectPath('/dashboard');
+    await loginPage.expectPath('/projects');
     expect(mock.callsTo('SignInWithGoogle')[0]?.variables).toEqual({
       code: 'one-time-code',
       nonce: 'tab-nonce',
@@ -246,7 +246,7 @@ test.describe('Sign in with Google', () => {
       }) => {
         await signInWithGoogleFrom(`/login${unsafe}`, { mockApi, page });
 
-        await loginPage.expectPath('/dashboard');
+        await loginPage.expectPath('/projects');
       });
     }
   });

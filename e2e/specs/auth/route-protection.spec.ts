@@ -1,6 +1,6 @@
 import { test } from '../../fixtures';
 
-const PROTECTED_PATHS = ['/dashboard', '/settings', '/email-logs', '/crud'];
+const PROTECTED_PATHS = ['/projects', '/settings', '/email-logs', '/projects/1'];
 
 test.describe('Route protection (signed out)', () => {
   for (const path of PROTECTED_PATHS) {

@@ -71,7 +71,7 @@ test.describe('Set up your account (invite)', () => {
     expect(mock.callsTo('AcceptInvitation')).toHaveLength(0);
   });
 
-  test('creating the account signs the user in and goes to the dashboard', async ({
+  test('creating the account signs the user in and goes to the projects page', async ({
     appShell,
     mockApi,
     setupAccountPage,
@@ -82,7 +82,7 @@ test.describe('Set up your account (invite)', () => {
 
     await setupAccountPage.submit(STRONG_PASSWORD);
 
-    await appShell.expectPath('/dashboard');
+    await appShell.expectPath('/projects');
     expect(mock.callsTo('AcceptInvitation')[0]?.variables).toMatchObject({
       password: STRONG_PASSWORD,
       passwordConfirmation: STRONG_PASSWORD,

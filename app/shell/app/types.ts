@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import type { SidebarIconName } from '@/shared/ui/sidebar';
 
 export type AppNavItem = {
@@ -16,6 +18,8 @@ export type AppNavGroup = {
 };
 
 export type AppPageHeaderProps = {
+  /** Buttons shown at the right of the header. */
+  actions?: ReactNode;
   description: string;
   title: string;
 };

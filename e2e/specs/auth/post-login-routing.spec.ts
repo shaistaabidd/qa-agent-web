@@ -24,12 +24,12 @@ const CASES: Case[] = [
     role: 'user',
   },
   {
-    expectedPath: '/dashboard',
+    expectedPath: '/projects',
     name: 'a fully set up user',
     role: 'user',
   },
   {
-    expectedPath: '/dashboard',
+    expectedPath: '/projects',
     name: 'a super admin, who skips onboarding',
     overrides: { onboarding: onboarding({ step1: ['firstName', 'lastName'] }) },
     role: 'super_admin',

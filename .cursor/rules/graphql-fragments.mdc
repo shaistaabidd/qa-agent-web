@@ -15,13 +15,17 @@ Check that file before writing a new operation. Use the closest selection, then 
 | `userSummaryFields` | A user from saas-api. Aliases `userType: role` and `revokeAccess: accessRevoked` keep the names components read |
 | `userFields`, `userAuthFields`, `userInviteFields`, `userRecordFields` | Same as `userSummaryFields` today (the API has no clinic or medical fields); kept so importers don't change |
 | `userSignInFields` | The user in `LoginUser` and `ValidateOtp`: what the redirect (including `onboarding`), role guards, and sidebar need before the reload. `FetchUser` supplies the rest |
-| `clinicFields` | Clinic, including `subscription` (deferred: not in saas-api yet) |
-| `clinicDetailFields` | `clinicFields` plus `website` (deferred) |
+| `projectFields` | A project, including `myRole` (gates the admin-only controls) |
+| `scopeFeatureFields` | A scope feature row |
+| `runListFields` | A run row in the queue: enough to poll its status |
+| `runFields` | One run with its summary, network log and audit trail |
+| `findingListFields` | An issue or finding row, with the issue stats; no evidence |
+| `findingFields` | One finding with its evidence (`details`, steps, screenshot) |
 | `emailLogFields` | An email log row (deferred) |
-| `smsLogFields` | An SMS log row, including its user (deferred) |
+| `smsLogFields` | An SMS log row, including its user |
 | `connectionFields` | `count`, `nextPage`, `prevPage`, `totalPages` |
 
-Validate a new or changed operation against saas-api's committed `schema.graphql` before shipping it.
+Validate a new or changed operation against the API's committed `schema.graphql` (`qa-agent-backend/schema.graphql`) before shipping it.
 
 ```ts
 import { userRecordFields } from '../fragments';

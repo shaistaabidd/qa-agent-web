@@ -109,7 +109,7 @@ test.describe('Signup', () => {
     });
   });
 
-  test('after the code, the new user is signed in to the dashboard', async ({
+  test('after the code, the new user is signed in to the projects page', async ({
     appShell,
     mockApi,
     otpPage,
@@ -122,7 +122,7 @@ test.describe('Signup', () => {
 
     await otpPage.submit('123456');
 
-    await appShell.expectPath('/dashboard');
+    await appShell.expectPath('/projects');
     expect(mock.callsTo('ValidateOtp')[0]?.variables).toMatchObject({
       email: NEW_USER.email,
       otpCode: '123456',

@@ -8,16 +8,10 @@ test.use({ storageState: COADMIN_STATE });
 
 test.describe('Onboarding guard (co-admin with setup complete)', () => {
   for (const path of SETUP_STEP_PATHS) {
-    test(`${path} sends a user with setup complete to the dashboard`, async ({ setupPage }) => {
+    test(`${path} sends a user with setup complete to the projects page`, async ({ setupPage }) => {
       await setupPage.open(path);
 
-      await setupPage.expectSentToDashboard();
+      await setupPage.expectSentToHome();
     });
   }
-
-  test('/payment-success stays reachable and shows the confirmation', async ({ setupPage }) => {
-    await setupPage.open('/payment-success');
-
-    await setupPage.expectPaymentSuccessShown();
-  });
 });

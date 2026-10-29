@@ -15,7 +15,7 @@ setup('sign in as co-admin and save the session', async ({ loginPage, otpPage, p
   await loginPage.login(email, password);
   await otpPage.expectLoaded();
   await otpPage.submit(otp as string);
-  await loginPage.expectPath('/dashboard');
+  await loginPage.expectPath('/projects');
 
   mkdirSync(path.dirname(COADMIN_STATE), { recursive: true });
   await page.context().storageState({ path: COADMIN_STATE });

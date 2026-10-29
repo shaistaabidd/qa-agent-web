@@ -38,7 +38,7 @@ test.describe('Reset password', () => {
     await resetPasswordPage.expectPath('/reset-password');
     await resetPasswordPage.submit(STRONG_PASSWORD);
 
-    await appShell.expectPath('/dashboard');
+    await appShell.expectPath('/projects');
     expect(mock.callsTo('SendResetPasswordInstructions')[0]?.variables).toMatchObject({
       email: EMAIL,
     });
@@ -54,7 +54,7 @@ test.describe('Reset password', () => {
     });
   });
 
-  test('a user is signed in to the dashboard after resetting', async ({
+  test('a user is signed in to the projects page after resetting', async ({
     appShell,
     forgotPasswordPage,
     mockApi,
@@ -79,7 +79,7 @@ test.describe('Reset password', () => {
     await otpPage.submit('123456');
     await resetPasswordPage.submit(STRONG_PASSWORD);
 
-    await appShell.expectPath('/dashboard');
+    await appShell.expectPath('/projects');
   });
 
   test('a password that misses the requirements is refused and not sent', async ({

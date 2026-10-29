@@ -1,5 +1,5 @@
 export {
-  DASHBOARD_PATH,
+  HOME_PATH,
   INVITE_EXPIRED_PATH,
   LOGIN_PATH,
   redirectToAppOrLogin,

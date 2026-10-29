@@ -24,7 +24,7 @@ import {
 import { Typography } from '@/shared/ui/Typography';
 
 import { LogoutConfirmDialog } from './components/LogoutConfirmDialog';
-import { DASHBOARD_PATH, getAppNavGroups, getAppProfile, SETTINGS_PATH } from './constants';
+import { getAppNavGroups, getAppProfile, HOME_PATH, SETTINGS_PATH } from './constants';
 
 function Profile() {
   const role = useAuthStore((state) => state.role);
@@ -105,7 +105,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <div className="flex min-h-0 flex-1 flex-col">
         <SidebarHeader>
-          <SidebarLogo to={DASHBOARD_PATH} />
+          <SidebarLogo to={HOME_PATH} />
           <SidebarTrigger />
         </SidebarHeader>
         <SidebarSeparator />

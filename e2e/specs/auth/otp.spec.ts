@@ -60,7 +60,7 @@ test.describe('Verification code', () => {
 
     await otpPage.submit('123456');
 
-    await appShell.expectPath('/dashboard');
+    await appShell.expectPath('/projects');
     expect(mock.callsTo('ValidateOtp')[0]?.variables).toMatchObject({
       email: USER.email,
       otpCode: '123456',

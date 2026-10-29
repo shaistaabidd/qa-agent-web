@@ -5,7 +5,7 @@ import { SidebarLogo, useSidebar } from '@/shared/ui/sidebar';
 import { TopBar, TopBarEnd, TopBarMenuButton, TopBarStart } from '@/shared/ui/top-bar';
 import { Typography } from '@/shared/ui/Typography';
 
-import { DASHBOARD_PATH, getAppProfile } from './constants';
+import { getAppProfile, HOME_PATH } from './constants';
 
 export function AppMobileHeader() {
   const { toggleSidebar } = useSidebar();
@@ -17,7 +17,7 @@ export function AppMobileHeader() {
     <TopBar className="lg:hidden">
       <TopBarStart>
         <TopBarMenuButton aria-label="Open menu" onClick={toggleSidebar} />
-        <SidebarLogo to={DASHBOARD_PATH} />
+        <SidebarLogo to={HOME_PATH} />
       </TopBarStart>
       <TopBarEnd>
         <Avatar size="32" src={toPhotoUrl(user?.imageUrl) || undefined}>

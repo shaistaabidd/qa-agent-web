@@ -2,13 +2,15 @@ import { expect, test as base } from '@playwright/test';
 
 import { AppShell } from '../page-object/AppShell';
 import { CoAdminsPage } from '../page-object/CoAdminsPage';
-import { DashboardPage } from '../page-object/DashboardPage';
 import { EmailLogsPage } from '../page-object/EmailLogsPage';
 import { ForgotPasswordPage } from '../page-object/ForgotPasswordPage';
+import { HomePage } from '../page-object/HomePage';
 import { InvitePage } from '../page-object/InvitePage';
 import { LoginPage } from '../page-object/LoginPage';
 import { OnboardingPage } from '../page-object/OnboardingPage';
 import { OtpPage } from '../page-object/OtpPage';
+import { ProjectPage } from '../page-object/ProjectPage';
+import { ProjectsPage } from '../page-object/ProjectsPage';
 import { ResetPasswordPage } from '../page-object/ResetPasswordPage';
 import { SettingsPage } from '../page-object/SettingsPage';
 import { SetupAccountPage } from '../page-object/SetupAccountPage';
@@ -24,7 +26,7 @@ import {
 import { MockSession } from './session';
 
 type Pages = {
-  dashboardPage: DashboardPage;
+  homePage: HomePage;
   coAdminsPage: CoAdminsPage;
   mockApi: (handlers: GraphqlHandlers) => Promise<GraphqlMock>;
   setupAccountPage: SetupAccountPage;
@@ -38,6 +40,8 @@ type Pages = {
   loginPage: LoginPage;
   onboardingPage: OnboardingPage;
   otpPage: OtpPage;
+  projectPage: ProjectPage;
+  projectsPage: ProjectsPage;
   settingsPage: SettingsPage;
   setupPage: SetupPage;
   smsLogsPage: SmsLogsPage;
@@ -54,8 +58,8 @@ export const test = base.extend<Pages>({
 
     expect(errors, 'uncaught errors in the page').toEqual([]);
   },
-  dashboardPage: async ({ page }, use) => {
-    await use(new DashboardPage(page));
+  homePage: async ({ page }, use) => {
+    await use(new HomePage(page));
   },
   coAdminsPage: async ({ page }, use) => {
     await use(new CoAdminsPage(page));
@@ -89,6 +93,12 @@ export const test = base.extend<Pages>({
   },
   otpPage: async ({ page }, use) => {
     await use(new OtpPage(page));
+  },
+  projectPage: async ({ page }, use) => {
+    await use(new ProjectPage(page));
+  },
+  projectsPage: async ({ page }, use) => {
+    await use(new ProjectsPage(page));
   },
   settingsPage: async ({ page }, use) => {
     await use(new SettingsPage(page));

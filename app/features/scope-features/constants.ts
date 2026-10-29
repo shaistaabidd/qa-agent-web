@@ -1,0 +1,1 @@
+export const SCOPE_FEATURES_PER_PAGE = 10;
