@@ -361,7 +361,7 @@ test.describe('Users page when some invited emails are skipped', () => {
 
     await coAdminsPage.sendInvite('fixed@example.test');
 
-    await coAdminsPage.expectToast('Invitation sent.');
+    await coAdminsPage.expectToast('Invitation sent.', { exact: true });
     await expect(coAdminsPage.drawer).toBeHidden();
     expect(mock.callsTo('CreateInvitation').at(-1)?.variables).toMatchObject({
       emails: ['fixed@example.test'],

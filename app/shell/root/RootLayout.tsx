@@ -20,7 +20,7 @@ export function RootLayout({ children }: RootLayoutProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} nonce={nonce} />
         <Meta />
-        <Links />
+        <Links nonce={nonce} />
       </head>
       <body>
         <ApolloHydrationHelper>{children}</ApolloHydrationHelper>

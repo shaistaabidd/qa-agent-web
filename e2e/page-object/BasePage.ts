@@ -11,8 +11,9 @@ export class BasePage {
     return this.page.reload();
   }
 
-  async expectToast(message: string) {
-    await expect(this.page.getByText(message)).toBeVisible();
+  /** `exact` matches the whole text, for a message that is part of another toast's ("Invitation sent." and "1 invitation sent."). */
+  async expectToast(message: string, options?: { exact?: boolean }) {
+    await expect(this.page.getByText(message, options)).toBeVisible();
   }
 
   async expectPath(path: string) {
