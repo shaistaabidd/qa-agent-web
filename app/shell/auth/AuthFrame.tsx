@@ -5,7 +5,6 @@ import { scrollbarHiddenClass } from '@/shared/lib/scrollbar';
 import { cn } from '@/shared/lib/utils';
 import { BrandLogo } from '@/shared/ui/brand-logo';
 
-import { AuthHeroPanel } from './AuthHeroPanel';
 import type { AuthFrameProps } from './types';
 
 const AUTH_LOGO_CLASS = 'inline-flex text-[20px]';
@@ -50,7 +49,6 @@ export function AuthFrame({ children, className, linkLogo = true }: AuthFramePro
           </div>
         </main>
       </div>
-      <AuthHeroPanel />
     </div>
   );
 }

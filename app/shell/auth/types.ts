@@ -9,10 +9,6 @@ export type AuthFrameProps = AuthLayoutProps & {
   linkLogo?: boolean;
 };
 
-export type AuthHeroPanelProps = {
-  className?: string;
-};
-
 export type AuthScreenHeaderProps = {
   aside?: ReactNode;
   className?: string;
