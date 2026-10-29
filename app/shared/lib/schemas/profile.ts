@@ -12,6 +12,11 @@ export const phoneSchema = z
     'Please enter a valid phone number',
   );
 
+/** For accounts where a phone is optional (SMS is off): blank is fine, anything typed must be valid. */
+export const optionalPhoneSchema = z
+  .string()
+  .refine((value) => !value || isValidPhoneNumber(value), 'Please enter a valid phone number');
+
 export const faxSchema = z
   .string()
   .refine(

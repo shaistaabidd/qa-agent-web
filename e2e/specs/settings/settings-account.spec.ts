@@ -14,6 +14,7 @@ function accountApi(
     changePasswordOk?: boolean;
     emailChangeOtp?: boolean;
     emailCodeOk?: boolean;
+    noPhone?: boolean;
     pendingEmail?: string;
   } = {},
 ) {
@@ -25,6 +26,7 @@ function accountApi(
     firstName: 'Ada',
     fullName: 'Ada Lovelace',
     lastName: 'Lovelace',
+    ...(overrides.noPhone ? { phone: '' } : {}),
     unconfirmedEmail: overrides.pendingEmail ?? null,
   });
 
@@ -92,6 +94,18 @@ test.describe('Settings (mocked account)', () => {
       firstName: 'Grace',
       lastName: 'Hopper',
     });
+  });
+
+  test('an account with no phone can still save its name', async ({ session, settingsPage }) => {
+    const mock = await session.signInAs(buildUser('super_admin'), accountApi({ noPhone: true }));
+    await settingsPage.open();
+    await settingsPage.expectLoaded();
+
+    await settingsPage.saveName('Grace', 'Hopper');
+
+    await settingsPage.expectToast('Profile updated successfully.');
+    await settingsPage.expectShown('Grace Hopper');
+    expect(mock.callsTo('UpdateUser')[0]?.variables).toMatchObject({ firstName: 'Grace' });
   });
 
   test('the phone is shown and edited with the name, and email is not part of it', async ({

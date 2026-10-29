@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form';
 
 import { FormInput } from '@/shared/lib/FormInput';
 import { FormPhoneField } from '@/shared/lib/FormPhoneField';
-import { firstNameSchema, lastNameSchema, phoneSchema } from '@/shared/lib/schemas';
+import { firstNameSchema, lastNameSchema, optionalPhoneSchema } from '@/shared/lib/schemas';
 
 import { SettingsDialog } from './SettingsDialog';
 
@@ -61,7 +61,7 @@ export function EditDetailsDialog({ initial, onOpenChange, onSave, open }: EditD
               label="Phone Number"
               name="phone"
               size="lg"
-              validate={phoneSchema}
+              validate={optionalPhoneSchema}
             />
           </div>
         </SettingsDialog>
