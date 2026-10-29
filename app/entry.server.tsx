@@ -9,7 +9,9 @@ import type { EntryContext, HandleErrorFunction, RouterContextProvider } from 'r
 import { ServerRouter } from 'react-router';
 
 import { makeClient } from '@/providers/apollo';
+import { NonceContext } from '@/shared/lib/nonce';
 import { reportError } from '@/shared/lib/reportError';
+import { createNonce, securityHeaders } from '@/shared/lib/securityHeaders';
 
 export const streamTimeout = 5_000;
 
@@ -26,6 +28,13 @@ export default function handleRequest(
   routerContext: EntryContext,
   _loadContext: RouterContextProvider,
 ) {
+  const nonce = createNonce();
+  for (const [name, value] of Object.entries(
+    securityHeaders(nonce, import.meta.env.VITE_APP_API_URL),
+  )) {
+    responseHeaders.set(name, value);
+  }
+
   // https://httpwg.org/specs/rfc9110.html#HEAD
   if (request.method.toUpperCase() === 'HEAD') {
     return new Response(null, {
@@ -53,9 +62,11 @@ export default function handleRequest(
     const client = makeClient(request);
 
     const { pipe, abort } = renderToPipeableStream(
-      <ApolloProvider client={client}>
-        <ServerRouter context={routerContext} url={request.url} />
-      </ApolloProvider>,
+      <NonceContext.Provider value={nonce}>
+        <ApolloProvider client={client}>
+          <ServerRouter context={routerContext} nonce={nonce} url={request.url} />
+        </ApolloProvider>
+      </NonceContext.Provider>,
       {
         [readyOption]() {
           shellRendered = true;

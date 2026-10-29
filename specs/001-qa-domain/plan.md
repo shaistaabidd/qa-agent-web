@@ -65,6 +65,10 @@ Needs `qa-agent-backend` Phase 2 and 3 (schema, agent contract). Blocks Phase 6 
 
 ## Delivery Log
 
+### 2026-10-29 — security headers
+
+Added enforced hardening headers and a report-only strict CSP with a per-request nonce (`app/entry.server.tsx`, `app/shared/lib/securityHeaders.ts`). The strict policy is report-only on purpose: it could not be exercised in a browser without starting the app, so it should be watched on a real page before it is enforced. `e2e/specs/shell/security-headers.spec.ts` covers the headers (not yet run).
+
 ### 2026-10-29 — implemented
 
 All eight features, 21 operations and seven mocked specs written. Typecheck, lint and build pass, and every operation validates against `qa-agent-backend/schema.graphql`. The Playwright specs have not been run: that needs a server started, which the repo's rules reserve for the user. The API gained `fetchFinding` for the issue page.

@@ -52,6 +52,15 @@ Sign-in is the boilerplate's: email and password, then a one-time code, or Googl
 
 Roles are the API's: `user` and `super_admin`. Super admins also get the email log, SMS log and user-management pages.
 
+## Security headers
+
+`app/entry.server.tsx` adds them to every HTML response (`app/shared/lib/securityHeaders.ts`).
+
+- **Enforced:** `frame-ancestors 'none'` and `X-Frame-Options: DENY`, `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`, HSTS, `nosniff`, a referrer policy and a permissions policy.
+- **Report only:** a strict policy that limits scripts to this origin and a per-request nonce (`NonceContext`, passed to `ServerRouter`, `Scripts` and the theme script), and limits `connect-src` to this origin and `VITE_APP_API_URL`. Open the browser console on a real page and look for `[Report Only]` messages. When there are none, move its directives into `Content-Security-Policy`.
+
+Route guards run in `clientLoader`, so a protected page shows a loading screen until the app hydrates. The API enforces all authorization, so this only affects what flashes on screen.
+
 ## Deploy
 
 `Dockerfile` builds the SSR app (`npm run build`) and serves it with `react-router-serve`, which reads `PORT`. Heroku's Node buildpack runs `npm start` the same way.

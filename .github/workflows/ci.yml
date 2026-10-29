@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   check:
-    name: Lint, typecheck and build
+    name: Lint, format, typecheck and build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -40,6 +40,9 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Format
+        run: npm run format
 
       - name: Typecheck
         run: npm run typecheck
