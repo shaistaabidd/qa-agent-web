@@ -1,0 +1,36 @@
+---
+description: Do not add Figma traceability comments when implementing UI from Figma MCP
+alwaysApply: true
+---
+
+# No Figma Traceability Comments
+
+When implementing or updating UI from **Figma MCP**, do **not** add comments that document Figma specs, sample copy, spacing, or node references. The code should be self-explanatory; design details belong in Figma, not in source files.
+
+## Do Not Add
+
+```typescript
+// ❌ BAD — Figma sample text / format notes
+/** Figma: `Uploaded at 23 Dec, 2025 on 09:34 PM` (day-first date, `on` before time). */
+
+// ❌ BAD — layout/spacing copied from Figma
+/** Figma: 16px padding, 12px section gaps; ID + date row; auction + status. */
+
+// ❌ BAD — Figma node references
+/** Figma: Segmented Button (node 1397-58141). Pill track at 1021px+. */
+```
+
+Also avoid inline `// Figma: …` or JSDoc lines that exist only to trace back to the design file.
+
+## Instead
+
+- Implement the UI directly — use existing components, tokens, and naming conventions.
+- Add comments only for **non-obvious business logic** or technical constraints that are not visible in Figma.
+- If format or copy rules matter, encode them in code (constants, helpers, tests) rather than comment blocks.
+
+```typescript
+// ✅ GOOD — no Figma comment; logic speaks for itself
+export function formatBuyerDocumentUploadedLabel(iso: string | null | undefined): string {
+  // ...
+}
+```

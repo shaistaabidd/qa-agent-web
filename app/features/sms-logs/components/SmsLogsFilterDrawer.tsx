@@ -1,0 +1,157 @@
+import { useState } from 'react';
+
+import { parseIsoDate, toIsoDate } from '@/shared/lib/dates';
+import { Button } from '@/shared/ui/button';
+import { DatePicker } from '@/shared/ui/date-picker';
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerFooter,
+  DrawerFooterActions,
+  DrawerHeader,
+  DrawerHeaderText,
+  DrawerTitle,
+} from '@/shared/ui/drawer';
+import { Dropdown, DropdownItem } from '@/shared/ui/dropdown';
+import { Label } from '@/shared/ui/label';
+
+import { SMS_LOG_STATUS_OPTIONS, SMS_MESSAGE_TYPE_OPTIONS } from '../constants';
+import type { SmsLogListFilters } from '../types';
+
+type SmsLogsFilterDrawerProps = {
+  endDate: string;
+  messageType: string;
+  onApply: (next: SmsLogListFilters) => void;
+  onOpenChange: (open: boolean) => void;
+  onReset: () => void;
+  open: boolean;
+  startDate: string;
+  status: string;
+};
+
+export function SmsLogsFilterDrawer({
+  endDate,
+  messageType,
+  onApply,
+  onOpenChange,
+  onReset,
+  open,
+  startDate,
+  status,
+}: SmsLogsFilterDrawerProps) {
+  const [tempStatus, setTempStatus] = useState(status || 'all');
+  const [tempMessageType, setTempMessageType] = useState(messageType || 'all');
+  const [tempStartDate, setTempStartDate] = useState(startDate);
+  const [tempEndDate, setTempEndDate] = useState(endDate);
+  const today = new Date();
+
+  function handleStartChange(value: Date | undefined) {
+    const nextStart = toIsoDate(value);
+    setTempStartDate(nextStart);
+
+    if (!nextStart || (tempEndDate && tempEndDate < nextStart)) {
+      setTempEndDate('');
+    }
+  }
+
+  function handleReset() {
+    setTempStatus('all');
+    setTempMessageType('all');
+    setTempStartDate('');
+    setTempEndDate('');
+    onReset();
+  }
+
+  return (
+    <Drawer onOpenChange={onOpenChange} open={open} position="right">
+      <DrawerContent size="lg">
+        <DrawerHeader>
+          <DrawerHeaderText>
+            <DrawerTitle>Filters</DrawerTitle>
+          </DrawerHeaderText>
+        </DrawerHeader>
+        <DrawerBody>
+          <div className="flex flex-col gap-[8px]">
+            <Label>Status</Label>
+            <Dropdown
+              aria-label="Status"
+              onValueChange={setTempStatus}
+              placeholder="Select"
+              size="md"
+              value={tempStatus}
+            >
+              {SMS_LOG_STATUS_OPTIONS.map((option) => (
+                <DropdownItem key={option.value} value={option.value}>
+                  {option.label}
+                </DropdownItem>
+              ))}
+            </Dropdown>
+          </div>
+          <div className="flex flex-col gap-[8px]">
+            <Label>Message type</Label>
+            <Dropdown
+              aria-label="Message type"
+              onValueChange={setTempMessageType}
+              placeholder="Select"
+              size="md"
+              value={tempMessageType}
+            >
+              {SMS_MESSAGE_TYPE_OPTIONS.map((option) => (
+                <DropdownItem key={option.value} value={option.value}>
+                  {option.label}
+                </DropdownItem>
+              ))}
+            </Dropdown>
+          </div>
+          <div className="flex flex-col gap-[8px]">
+            <Label>Start date</Label>
+            <DatePicker
+              maxDate={today}
+              onValueChange={handleStartChange}
+              placeholder="Start date"
+              size="md"
+              value={parseIsoDate(tempStartDate)}
+            />
+          </div>
+          <div className="flex flex-col gap-[8px]">
+            <Label>End date</Label>
+            <DatePicker
+              disabled={!tempStartDate}
+              maxDate={today}
+              minDate={parseIsoDate(tempStartDate)}
+              onValueChange={(value) => setTempEndDate(toIsoDate(value))}
+              placeholder="End date"
+              size="md"
+              value={parseIsoDate(tempEndDate)}
+            />
+          </div>
+        </DrawerBody>
+        <DrawerFooter sticky>
+          <DrawerFooterActions>
+            <Button onClick={handleReset} size="md" type="button" variant="outline">
+              Reset all
+            </Button>
+          </DrawerFooterActions>
+          <DrawerFooterActions>
+            <Button
+              onClick={() => {
+                onApply({
+                  endDate: tempEndDate,
+                  messageType: tempMessageType,
+                  startDate: tempStartDate,
+                  status: tempStatus,
+                });
+                onOpenChange(false);
+              }}
+              size="md"
+              type="button"
+            >
+              Apply
+            </Button>
+          </DrawerFooterActions>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}

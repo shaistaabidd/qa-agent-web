@@ -1,0 +1,250 @@
+@theme static {
+  --color-brand-25: #f6fdfb;
+  --color-brand-50: #ebfcf6;
+  --color-brand-100: #d8f9ec;
+  --color-brand-200: #baf2de;
+  --color-brand-300: #8be4c3;
+  --color-brand-400: #4ad9a4;
+  --color-brand-500: #14b87c;
+  --color-brand-600: #067c57;
+  --color-brand-700: #065d3d;
+  --color-brand-800: #08452e;
+  --color-brand-900: #082b1e;
+  --color-brand-950: #071b13;
+
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
+
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+  --color-blue-950: #172554;
+
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+  --color-green-950: #052e16;
+
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+  --color-red-950: #450a0a;
+
+  --color-yellow-50: #fefce8;
+  --color-yellow-100: #fef9c3;
+  --color-yellow-200: #fef08a;
+  --color-yellow-300: #fde047;
+  --color-yellow-400: #facc15;
+  --color-yellow-500: #eab308;
+  --color-yellow-600: #ca8a04;
+  --color-yellow-700: #a16207;
+  --color-yellow-800: #854d0e;
+  --color-yellow-900: #713f12;
+  --color-yellow-950: #422006;
+
+  --color-rosy-50: #fdf2f6;
+  --color-rosy-100: #f8e4eb;
+  --color-rosy-200: #eecdd8;
+  --color-rosy-300: #d9abba;
+  --color-rosy-400: #bb8b9b;
+  --color-rosy-500: #99707e;
+  --color-rosy-600: #725a62;
+  --color-rosy-700: #59424a;
+  --color-rosy-800: #402e34;
+  --color-rosy-900: #271c1f;
+  --color-rosy-950: #1b1316;
+
+  --color-amber-50: #fcfaf8;
+  --color-amber-100: #fbf5ee;
+  --color-amber-200: #fbecdb;
+  --color-amber-300: #fadebc;
+  --color-amber-400: #faca8e;
+  --color-amber-500: #f6ab51;
+  --color-amber-600: #e98c1c;
+  --color-amber-700: #a7681b;
+  --color-amber-800: #6b4619;
+  --color-amber-900: #3c2a13;
+  --color-amber-950: #251b0e;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-brand-primary: var(--color-brand-600);
+
+  --color-surface-background: var(--color-amber-50);
+  --color-surface-background-variant: var(--color-slate-100);
+  --color-surface-white: var(--color-white);
+
+  --color-icon-primary: var(--color-brand-primary);
+  --color-icon-high: var(--color-slate-900);
+  --color-icon-medium: var(--color-rosy-600);
+
+  --border-color-primary: var(--color-brand-primary);
+  --border-color-medium: var(--color-slate-400);
+  --border-color-low: var(--color-slate-200);
+
+  --color-primary: var(--color-brand-primary);
+  --color-high: var(--color-slate-900);
+  --color-medium: var(--color-rosy-600);
+  --color-low: var(--color-rosy-400);
+  --color-disabled: var(--color-slate-500);
+  --color-error: var(--color-red-700);
+
+  --color-popover: var(--color-surface-white);
+  --color-border: var(--border-color-low);
+
+  --color-sidebar: var(--color-bg-surface);
+  --color-sidebar-foreground: var(--color-fg-default);
+  --color-sidebar-border: var(--border-color-subtle);
+  --color-sidebar-icon-accent: var(--color-amber-400);
+
+  /*
+   * New semantic token layer, namespaced as fg, bg, border and state, kept distinct
+   * from the pre-existing color-high / color-medium / color-low / surface family
+   * above so this does not silently reinterpret tokens already used outside the
+   * components being retouched. Dark overrides live in the data-theme dark block
+   * below. Brand color is intentionally kept as this app's existing teal
+   * (color-brand ramp) rather than switching hue -- everything else (neutrals,
+   * status colors, overlays, shadow) takes the new exact values.
+   */
+  --color-fg-default: #111827;
+  --color-fg-secondary: #6b737f;
+  --color-fg-muted: #9298a2;
+  --color-fg-inverse: #ffffff;
+  --color-fg-primary: var(--color-brand-600);
+  --color-fg-on-primary: #ffffff;
+  --color-fg-success: var(--color-green-800);
+  --color-fg-warning: #92400e;
+  --color-fg-danger: var(--color-red-700);
+  --color-fg-info: var(--color-blue-800);
+
+  --color-bg-canvas: #ffffff;
+  --color-bg-surface: #ffffff;
+  --color-bg-elevated: #ffffff;
+  --color-bg-raised: #ffffff;
+  --color-bg-muted: #f2f3f5;
+  --color-bg-inverse: #111827;
+  --color-bg-scrim: rgb(17 24 39 / 0.5);
+  --color-bg-primary: var(--color-brand-600);
+  --color-bg-primary-subtle: var(--color-brand-100);
+  --color-bg-success-subtle: var(--color-green-100);
+  --color-bg-warning-subtle: #fef3c7;
+  --color-bg-danger-subtle: var(--color-red-100);
+  --color-bg-info-subtle: var(--color-blue-100);
+  --color-bg-danger: var(--color-red-600);
+  /* bg-success: solid fill for the success progress bar and completed stepper
+     steps -- the green ramp at the same step the danger solid uses (600). */
+  --color-bg-success: #16a34a;
+
+  --border-color-subtle: var(--color-slate-200);
+  --border-color-default: var(--color-slate-300);
+  /* border-strong: hover edge for inputs/checkboxes/switches/chips — the next
+     neutral step up from border-default. */
+  --border-color-strong: #9298a2;
+  --border-color-focus: var(--color-brand-600);
+  --border-color-danger: var(--color-red-600);
+
+  --color-state-hover: rgb(17 24 39 / 0.05);
+  --color-state-pressed: rgb(17 24 39 / 0.1);
+  --color-state-focus: rgb(20 184 124 / 0.3);
+  --color-state-focus-danger: rgb(220 38 38 / 0.25);
+  --color-shadow: rgb(0 0 0 / 0.04);
+}
+
+/*
+ * Dark overrides for the semantic layer above. Runtime-switched via
+ * [data-theme="dark"] on <html> — see app/shared/lib/theme.ts for how the attribute
+ * is set, persisted, and synced with system preference.
+ */
+[data-theme='dark'] {
+  --color-fg-default: #f8f9fa;
+  --color-fg-secondary: #9298a2;
+  --color-fg-muted: #878d99;
+  --color-fg-inverse: #111827;
+  --color-fg-primary: var(--color-brand-400);
+  --color-fg-success: #86efac;
+  --color-fg-warning: #fcd34d;
+  --color-fg-danger: #fca5a5;
+  --color-fg-info: #93c5fd;
+
+  --color-bg-canvas: #0d0d0f;
+  --color-bg-surface: #151517;
+  --color-bg-elevated: #202023;
+  --color-bg-raised: #202023;
+  --color-bg-muted: #202023;
+  --color-bg-inverse: #f8f9fa;
+  --color-bg-scrim: rgb(0 0 0 / 0.6);
+  --color-bg-primary-subtle: var(--color-brand-950);
+  --color-bg-success-subtle: #052e16;
+  --color-bg-warning-subtle: #451a03;
+  --color-bg-danger-subtle: #450a0a;
+  --color-bg-info-subtle: #172554;
+  --color-bg-danger: var(--color-red-700);
+  --color-bg-success: #15803d;
+
+  --border-color-subtle: #38383e;
+  --border-color-default: #4c4c54;
+  --border-color-strong: #6b737f;
+  --border-color-focus: var(--color-brand-400);
+  --border-color-danger: #f87171;
+
+  --color-state-hover: rgb(255 255 255 / 0.05);
+  --color-state-pressed: rgb(255 255 255 / 0.1);
+  --color-state-focus: rgb(74 217 164 / 0.35);
+  --color-state-focus-danger: rgb(248 113 113 / 0.35);
+  --color-shadow: rgb(0 0 0 / 0.3);
+
+  /*
+   * Older semantic tokens (surface, text, icon, border). They are defined against
+   * the light ramp above, so each needs a dark value here.
+   */
+  --color-surface-background: var(--color-bg-canvas);
+  --color-surface-background-variant: var(--color-bg-muted);
+  --color-surface-white: var(--color-bg-surface);
+
+  --color-icon-primary: var(--color-brand-400);
+  --color-icon-high: var(--color-fg-default);
+  --color-icon-medium: var(--color-fg-secondary);
+
+  --border-color-primary: var(--color-brand-400);
+  --border-color-medium: #6b737f;
+  --border-color-low: var(--border-color-subtle);
+
+  --color-primary: var(--color-brand-400);
+  --color-high: var(--color-fg-default);
+  --color-medium: var(--color-fg-secondary);
+  --color-low: var(--color-fg-muted);
+  /* Also used as subtitle copy (auth headers, OTP hints), so it must stay AA on dark surfaces. */
+  --color-disabled: #8b919c;
+  --color-error: var(--color-red-400);
+}

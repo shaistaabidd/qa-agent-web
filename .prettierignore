@@ -1,0 +1,12 @@
+/node_modules/
+/.react-router/
+/build/
+/.agents/
+/.cursor/
+/.claude/
+/package-lock.json
+/.env
+/.env.*
+/.npmrc
+/playwright-report/
+/test-results/

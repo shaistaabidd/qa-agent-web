@@ -1,0 +1,33 @@
+---
+description: Use FormInput and shared Zod schemas with TanStack Form. Keep Label/Input as UI only.
+alwaysApply: true
+---
+
+# TanStack Form
+
+`Label`, `Input`, and `Textarea` are UI only. Do not import `@tanstack/react-form` inside `app/shared/ui/`. Do not replace them with raw `<input>`, `<textarea>`, or `<label>`.
+
+## Reuse
+
+- Field schemas live in `app/shared/lib/schemas.ts`. Add `email`, `password`, `npi`, `city`, and similar fields there once, then pass them as `validate`.
+- Compose longer forms with `z.object({ email: emailSchema, city: citySchema })`.
+- Text inputs use `FormInput` from `@/shared/lib/FormInput`. Do not copy `form.Field` + `Label` + `Input` by hand.
+- Checkboxes, OTP, and other non-input controls stay on `form.Field` (or their own component).
+
+## Validate
+
+- Run schemas on `onBlur` and `onSubmit` (this is what `FormInput` does).
+- Do not validate on every keystroke from the start. After an error is showing, clear it when the value becomes valid (`revalidateIfError`).
+- Use `error` on both `Label` and the field. Show the first message as `helperText`. `FormInput` already does this.
+
+```tsx
+<FormInput
+  form={form}
+  label="Email address"
+  name="email"
+  type="email"
+  validate={emailSchema}
+/>
+```
+
+Do not spread the TanStack `field` object onto `Input` or `Textarea`.

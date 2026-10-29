@@ -1,0 +1,60 @@
+---
+description: Keep components atomic and files within 200–300 lines; split when a file exceeds 300 lines
+alwaysApply: true
+---
+
+# Atomic Components & File Size Limits
+
+Write small, focused components. Each file should do one thing well.
+
+## Line Count Targets
+
+| Range | Action |
+|-------|--------|
+| **200–300 lines** | Ideal target for most components, hooks, and page files |
+| **301–350 lines** | Acceptable only with a brief comment explaining why (e.g. tightly coupled layout) |
+| **350+ lines** | Must split before finishing the task — no exceptions without explicit user approval |
+
+When creating or editing a file, check its length. If it will exceed **300 lines**, stop and refactor first.
+
+## How to Split
+
+Extract into the feature's `hooks/` and `components/` folders (see the feature-folder-structure rule):
+
+- **UI pieces** → `components/` (`LandingHeroIntro.tsx`, `OrderDetailsStatCard.tsx`)
+- **Feature-local hooks** → `hooks/useXxx.ts` (state, effects, data fetching)
+- **Constants & types** → feature-root `constants.ts`, `types.ts`
+- **Pure helpers** → feature-root `utils.ts`, `motion.ts`
+- **Orchestrator** → thin parent at the feature root that composes children (≤ 100 lines when possible)
+
+## Component Rules
+
+- One primary export per file; name the file after that export
+- Move inline subcomponents out once they exceed ~40 lines or are reused
+- Keep business logic in hooks/utils, not in JSX-heavy files
+- Prefer composition over large prop-drilling monoliths
+
+## Examples
+
+```
+❌ BAD — 500-line LandingHeroPanelSection.tsx with 8 inline components
+
+✅ GOOD
+app/features/landing/
+  LandingHeroPanelSection.tsx
+  constants.ts
+  motion.ts
+  hooks/
+    useLandingHeroSignUpReveal.ts
+  components/
+    LandingHeroIntro.tsx
+    LandingHowItWorksSection.tsx
+```
+
+## Allowed Exceptions (still prefer splitting)
+
+- Auto-generated files (`.gen.ts`, codegen output)
+- Large static config/data maps with no logic
+- Third-party vendored or copied code
+
+For any other exception over 300 lines, ask the user before leaving the file unsplit.

@@ -1,0 +1,226 @@
+---
+paths:
+  - "specs/**"
+---
+
+# Spec-Driven Development — full workflow
+
+This is the detail behind `.claude/rules/spec-driven-development.md`. It
+loads automatically once a file under `specs/` is in play, so the one-time
+cost of this file is paid only on sessions that actually touch a spec.
+
+## Folder convention
+
+```
+specs/
+  _template/        starter files — copy, don't edit in place
+    spec.md
+    plan.md
+    tasks.md
+    lite-spec.md
+  _archive/          shipped specs move here — see "Archiving a shipped spec"
+    001-older-feature.md
+    002-bigger-feature/
+  README.md
+  003-lite-example.md       a Lite spec — one committed file
+  004-full-example/         a Full spec — folder with all three files
+    spec.md
+    plan.md
+    tasks.md
+```
+
+- `NNN` is one sequential, global counter shared by both tiers, zero-padded
+  to 3 digits, starting at `001` — a Lite spec and a Full spec never reuse
+  a number just because they're different shapes. Find the next number:
+  `ls specs | grep -E '^[0-9]{3}' | sort | tail -1`.
+- `slug` is kebab-case and matches the feature portion of the branch name.
+- Two branches landing on the same `NNN` is rare and cheap to fix: whoever
+  merges second renames their folder/file (`git mv specs/00N-foo
+  specs/0(N+1)-foo`) before merging. Don't build a reservation system for
+  this.
+
+## Which tier — Lite or Full
+
+The pointer rule (`.claude/rules/spec-driven-development.md`) has the
+decision criteria — read it first, since the choice is made before any file
+under `specs/` exists. Short version: one flow, 2-4 files, nothing touching
+auth/payments/billing/data model → **Lite**, a single
+`specs/<NNN>-<slug>.md` from `specs/_template/lite-spec.md`. Anything
+bigger or riskier → **Full**, the three-file folder below.
+
+Lite's phases are compressed — no separate Plan phase with its own review
+and Release Gate, no Specify Quality Pass, no Deep Regression Pass:
+
+| Phase | Who/what runs it | Produces |
+|---|---|---|
+| 1. Specify | `/spec`'s interrogation, condensed | `specs/<NNN>-<slug>.md` from `specs/_template/lite-spec.md` — Context, EARS Acceptance Criteria, Files Reference, Out of Scope, a "Done When" checklist standing in for a separate plan/tasks/gate. |
+| 2. Implement | `tdd` skill + existing `.claude/rules/*` | Code + the matching `e2e/specs/<area>/*.spec.ts`, built side by side, same as Full. No Dev Notes/citations required — one flow means there's nothing to carry forward between flows. |
+| 3. Verify & Ship | `npm run e2e`, a quick manual console check, `/review`, `/ship` | Every "Done When" box checked. No mandatory `browser-regression-testing` pass — run it anyway if anything about the change feels fragile, but it's a judgment call, not a gate, at this tier. |
+
+If ambiguity shows up while specifying a Lite feature, ask it inline in
+chat — a formal Clarifications log is Full-tier ceremony a one-flow change
+doesn't need.
+
+## Keep real specs lean
+
+`specs/_template/*.md` keeps its bracketed instructional hints — `[like
+this]` — so the convention is discoverable from a blank copy. Once you fill
+in a section in a real `specs/<NNN>-<slug>/*.md`, delete the bracketed hint
+instead of leaving it next to the real content. A filled section still
+carrying its instructions costs real tokens on every later read (the
+Specify Quality Pass, `/review`, a future contributor) for zero benefit
+once it's actually written.
+
+## Branch naming
+
+Branches keep the existing `type/slug` convention from `commit-message.md`
+(`feature/co-admin-bulk-invite`, `fix/sms-retry-loop`). The spec folder's slug
+matches the branch's slug with the `type/` prefix stripped:
+
+- Branch `feature/co-admin-bulk-invite` → `specs/001-co-admin-bulk-invite/`
+
+Don't invent a numeric branch prefix — that would conflict with the
+`type/slug` convention PR titles and commit messages already depend on.
+
+## Phase-by-phase workflow (Full tier)
+
+| Phase | Who/what runs it | Produces |
+|---|---|---|
+| 1. Specify | `/spec` — existing Phase 1-5 interrogation | Files a GitHub issue + private `~/.gstack/` archive (unchanged). **New step:** copy the issue body verbatim into `specs/<NNN>-<slug>/spec.md` (start from `specs/_template/spec.md`), add the frontmatter linking the issue. Commit on the feature branch before writing code. |
+| 2. Plan | `/plan-eng-review`, plus `/plan-design-review` for UI/design-system work | `plan.md` — approach, alternatives rejected, risks, review verdict, a Release Gate table defined upfront (even though nothing can be `passed` yet), and an empty Requirement Traceability table (one row per Acceptance Criterion). `plan.md` then stays open as a living Delivery Log through phases 4-6: append dated entries as evidence lands, closing each `spec.md` Acceptance Criterion against the evidence that satisfied it. This closes the loop the way a good postmortem does — the evidence lives next to the claim it supports, not off in a merged PR nobody reopens. |
+| 3. Tasks | Manual/agent breakdown from Phases 1-2, then the Specify Quality Pass (below) | `tasks.md` — checkboxes, each traceable to a numbered Acceptance Criterion or Testing Plan row in `spec.md`. Run the Quality Pass before Build starts, not after. |
+| 4. Implement | `tdd` skill + existing `.claude/rules/*` | Code, and — per `tasks.md`'s "Flows" section — the matching `e2e/specs/<area>/*.spec.ts` for each flow, built side by side with the implementation, not deferred. Each flow's Dev Notes cite `plan.md`/`spec.md` (`[Source: plan.md#section]`) and carry forward what the previous flow revealed. An `IF/THEN` (EARS unwanted-behavior) criterion gets its own flow exercising the failure path, same as a happy-path `WHEN` criterion. Check off `tasks.md` items as they land, not batched at the end. |
+| 5. Converge/Verify | `npm run e2e`, then the `browser-regression-testing` skill, then `/review` | Confirmed Acceptance Criteria met; `tasks.md` fully checked; `plan.md`'s Requirement Traceability table filled in (AC# → e2e test → result). Before `/ship`, run one deep regression pass with `browser-regression-testing` against every flow — functional + inverse, break-it inputs, console (zero new errors/warnings), leak check, and performance (no new long tasks). That skill needs a running dev server, so get the user's explicit go-ahead first per `no-dev-server.md`/`no-localhost-preview.md` — never start it yourself. Log the findings as a dated entry in `plan.md`'s Delivery Log. |
+| 6. Ship | `/ship` | PR links `specs/<NNN>-<slug>/`; `Closes #<issue>` only when the spec is fully delivered. After merge, archive the spec folder (below) — a hook reminds you the next time you `git pull`, in case it's forgotten in the moment. |
+
+## Writing acceptance criteria
+
+Use EARS notation (Easy Approach to Requirements Syntax) — `WHEN <trigger>
+THE SYSTEM SHALL <response>`, `IF <condition> THEN THE SYSTEM SHALL
+<response>`, etc. See the table in `specs/_template/spec.md`. A criterion
+without a trigger and a response isn't testable, it's a vibe.
+
+## Specify Quality Pass (one read, two checklists — before Build starts)
+
+Read `spec.md` + `plan.md` + `tasks.md` + the `.claude/rules/*.md` that
+apply, once, and run both checklists against that single read instead of
+two separate passes over the same documents.
+
+**1. Clarify** — resolve ambiguity in `spec.md` first; its answers often
+resolve what the Analyze checklist below would otherwise flag, so doing it
+first avoids finding the same gap twice. At most 5 numbered questions,
+asked one at a time, never batched:
+
+- State why the question matters.
+- Give either 2-5 options with a recommended default, or a single
+  short-answer prompt.
+- Append the answer immediately under `spec.md`'s `## Clarifications`
+  session heading — save after each answer, don't wait for all five.
+
+Skip entirely if nothing is genuinely ambiguous — this isn't a checklist to
+pad.
+
+**2. Analyze** — a read-only consistency check across the same documents.
+Reports only, never auto-fixes. Check for:
+
+- **Duplication** — the same requirement stated twice, worded differently
+- **Ambiguity / underspecification** — anything Clarify should have caught
+  but didn't
+- **Rules conflict** — the plan or tasks contradict an existing
+  `.claude/rules/*.md` file (automatically the highest severity below)
+- **Coverage gaps** — an Acceptance Criterion with no task/flow, or a task
+  with no Acceptance Criterion behind it
+- **Inconsistency** — naming, file paths, or terminology drift between the
+  three documents
+
+Tag each finding CRITICAL (rules conflict, or a gap that blocks Build) /
+HIGH / MEDIUM / LOW. Fix CRITICAL and HIGH before Build starts; MEDIUM/LOW
+can be waived with a one-line reason in `plan.md`'s Open Questions. Cap the
+list at the findings that actually matter — this isn't a score to maximize.
+
+## Automated reminders
+
+Three non-blocking hooks in `.claude/settings.json` support this workflow:
+
+- Editing a `specs/*/tasks.md` file that has checked boxes prints a reminder
+  to append a dated Delivery Log entry in the sibling `plan.md`. Full tier
+  only — Lite has no `tasks.md`.
+- Running `git commit` on a branch with no matching `specs/NNN-<slug>/`
+  folder or `specs/NNN-<slug>.md` file prints a soft reminder — never blocks
+  the commit. Covers both tiers.
+- Running `git pull` prints a reminder listing any `specs/<NNN>-<slug>/`
+  folder or `specs/<NNN>-<slug>.md` file whose branch no longer exists
+  locally or remotely — a likely sign it shipped and is ready to archive.
+  Best-effort: it depends on your git config actually pruning deleted
+  remote branches, so a false negative (nothing reported) doesn't mean
+  nothing shipped.
+
+All three are reminders, not gates. Ignore them for exempt changes.
+
+## Definition of Ready / Done (Full tier)
+
+Lite's equivalent is simpler: the "Done When" checklist inside
+`specs/<NNN>-<slug>.md` is both its Ready and Done bar — filled in before
+Build (even if every box starts unchecked) and fully checked before `/ship`.
+What follows applies to Full.
+
+### Definition of Ready (before implementation starts)
+
+- [ ] `spec.md` committed, every section filled in, no `[TBD]` left
+- [ ] Acceptance Criteria are numbered and pass/fail
+- [ ] `Out of Scope` is explicit
+- [ ] Companion GitHub issue filed, number/url in `spec.md` frontmatter
+- [ ] `plan.md` has at least one eng review pass (+ design review if UI work)
+- [ ] `plan.md`'s Release Gate table lists every gate this feature must clear
+      (`pending` is fine — they just need to be named before Build starts)
+- [ ] Specify Quality Pass run: Clarify answered and logged, Analyze run
+      with zero unresolved CRITICAL or HIGH findings
+
+### Definition of Done (before `/ship`)
+
+- [ ] `tasks.md` has zero unchecked boxes, or remaining ones are struck
+      through with an inline reason (`~~[ ] reason~~`)
+- [ ] Every numbered Acceptance Criterion in `spec.md` is demonstrably met
+- [ ] `plan.md` records any deviation from the original approach
+- [ ] Every Release Gate row in `plan.md` is `passed` or `waived` — none left
+      `pending`
+- [ ] Every Acceptance Criterion in `spec.md` has at least one Delivery Log
+      entry in `plan.md` evidencing it
+- [ ] Deep regression pass run (`browser-regression-testing` skill) against
+      every flow: zero new console errors/warnings, leak check clean, no new
+      long tasks — findings logged in `plan.md`'s Delivery Log
+- [ ] PR description links to `specs/<NNN>-<slug>/`
+
+## Enforcement
+
+Soft convention for the first month: the PR template nudges toward linking a
+spec folder. No CI block yet. See "Future CI enforcement" in `specs/README.md`.
+
+## Archiving a shipped spec
+
+Once a spec's PR merges — every Release Gate row `passed`/`waived` for
+Full, every "Done When" box checked for Lite — move it:
+
+- Full: `git mv specs/<NNN>-<slug>/ specs/_archive/<NNN>-<slug>/`
+- Lite: `git mv specs/<NNN>-<slug>.md specs/_archive/<NNN>-<slug>.md`
+
+This keeps `specs/` showing only what's currently being built — a shipped
+spec stops cluttering that view but stays in git history and the archive
+for reference. If you forget, the `git pull` reminder hook (above) catches
+it on the next sync — it checks both the folder and file forms.
+
+What this does **not** do yet: merge the shipped spec's still-true
+requirements into a canonical per-capability document, or track later specs
+as `ADDED`/`MODIFIED`/`REMOVED` deltas against an earlier one. That's a real
+need once two specs touch overlapping behavior — not yet, since specs
+accumulate one at a time. Revisit this once a second spec needs to
+reference what a first one established.
+
+## Keep `.cursor/rules/` in sync
+
+When this file changes, update
+`.cursor/rules/spec-driven-development-detail.mdc` with the same body
+(Cursor frontmatter: `description` + `globs: specs/**` + `alwaysApply:
+false`). When `spec-driven-development.md` (the pointer) changes, update
+`.cursor/rules/spec-driven-development.mdc` the same way (its frontmatter
+stays `alwaysApply: true`, no `globs`).
