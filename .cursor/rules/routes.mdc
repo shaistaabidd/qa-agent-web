@@ -1,0 +1,77 @@
+---
+description: Keep one URL per page, split route groups by area, and vary features by role inside the page
+alwaysApply: true
+---
+
+# Routes
+
+`app/routes.ts` only composes groups. Each area owns one group file under `app/routing/`. Route modules under `app/routes/` stay thin: title and the feature page.
+
+```
+app/routes.ts
+app/routing/public.routes.ts
+app/routing/auth.routes.ts
+app/routing/onboarding.routes.ts
+app/routing/app.routes.ts
+app/routes/orders.tsx          URL entry only
+```
+
+```ts
+export default [
+  ...publicRoutes,
+  ...authRoutes,
+  ...onboardingRoutes,
+  ...appRoutes,
+] satisfies RouteConfig;
+```
+
+Register each URL once. Add a new area as a new group file. Do not copy a page into a separate tree per role.
+
+## Who can open the URL
+
+A layout calls `requireAuth` or `requireRoles`. Roles missing from that list never get the page.
+
+```ts
+layout('shell/app/AppLayout.tsx', [
+  route('dashboard', 'routes/dashboard.tsx'),
+  route('settings', 'routes/settings.tsx'),
+  layout('shell/app/StaffLayout.tsx', [
+    route('orders', 'routes/orders.tsx'),
+  ]),
+]);
+```
+
+`StaffLayout` calls `requireRoles([Role.PHARMACY, Role.PROVIDER])`. Patient and admin are redirected. Pharmacy and provider share `/orders`.
+
+Put the gate on the smallest layout that shares those roles. One role-only page can use its own layout. Do not check roles inside `app/routes/` modules.
+
+## What that role sees
+
+The feature page reads the role and renders only what that role can do. Same URL, different UI.
+
+```ts
+export function canCancelOrder(role: AppRole) {
+  return role === 'pharmacy';
+}
+```
+
+```tsx
+{canCancelOrder(role) ? <CancelOrderButton /> : null}
+```
+
+Keep `canX(role)` next to the feature (`constants.ts` or `utils.ts`). Settings already does this with `settingsTabsFor`. Sidebar links come from `getAppNavGroups`. A missing nav item is not the gate — the layout still blocks the URL.
+
+## Do not
+
+```ts
+// ❌ separate route trees that repeat /orders
+export const pharmacyRoutes = [route('orders', 'routes/pharmacy/orders.tsx')];
+export const providerRoutes = [route('orders', 'routes/provider/orders.tsx')];
+```
+
+```tsx
+// ❌ role switch inside the route module
+export default function Orders() {
+  return role === 'pharmacy' ? <PharmacyOrdersPage /> : <ProviderOrdersPage />;
+}
+```

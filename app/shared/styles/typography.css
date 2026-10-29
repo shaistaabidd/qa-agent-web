@@ -1,0 +1,120 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme static {
+  --size-text-xxs: 10px;
+  --size-text-xs: 12px;
+  --size-text-sm: 14px;
+  --size-text-base: 16px;
+  --size-text-lg: 18px;
+  --size-text-xl: 20px;
+  --size-text-2xl: 24px;
+  --size-text-3xl: 30px;
+  --size-text-4xl: 36px;
+  --size-text-5xl: 48px;
+  --size-text-6xl: 60px;
+  --size-text-7xl: 72px;
+  --size-text-8xl: 96px;
+  --size-text-9xl: 128px;
+
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-body: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --font-weight-regular: var(--weight-regular);
+  --font-weight-medium: var(--weight-medium);
+  --font-weight-semibold: var(--weight-semibold);
+  --font-weight-bold: var(--weight-bold);
+
+  --leading-xxs: 12px;
+  --leading-xs: 16px;
+  --leading-sm: 20px;
+  --leading-base: 24px;
+  --leading-lg: 28px;
+  --leading-xl: 28px;
+  --leading-2xl: 32px;
+  --leading-3xl: 36px;
+  --leading-4xl: 40px;
+  --leading-5xl: 48px;
+  --leading-6xl: 60px;
+  --leading-7xl: 72px;
+  --leading-8xl: 96px;
+  --leading-9xl: 128px;
+
+  --text-xxs: var(--size-text-xxs);
+  --text-xxs--line-height: var(--leading-xxs);
+  --text-xs: var(--size-text-xs);
+  --text-xs--line-height: var(--leading-xs);
+  --text-sm: var(--size-text-sm);
+  --text-sm--line-height: var(--leading-sm);
+  --text-base: var(--size-text-base);
+  --text-base--line-height: var(--leading-base);
+  --text-lg: var(--size-text-lg);
+  --text-lg--line-height: var(--leading-lg);
+  --text-xl: var(--size-text-xl);
+  --text-xl--line-height: var(--leading-xl);
+  --text-2xl: var(--size-text-2xl);
+  --text-2xl--line-height: var(--leading-2xl);
+  --text-3xl: var(--size-text-3xl);
+  --text-3xl--line-height: var(--leading-3xl);
+  --text-4xl: var(--size-text-4xl);
+  --text-4xl--line-height: var(--leading-4xl);
+  --text-5xl: var(--size-text-5xl);
+  --text-5xl--line-height: var(--leading-5xl);
+  --text-6xl: var(--size-text-6xl);
+  --text-6xl--line-height: var(--leading-6xl);
+  --text-7xl: var(--size-text-7xl);
+  --text-7xl--line-height: var(--leading-7xl);
+  --text-8xl: var(--size-text-8xl);
+  --text-8xl--line-height: var(--leading-8xl);
+  --text-9xl: var(--size-text-9xl);
+  --text-9xl--line-height: var(--leading-9xl);
+
+  /* Named per-job (not per-size) type scale, each paired with its own weight and
+     line-height. Used by `Typography`'s variant prop going forward; the legacy
+     --text-xxs..9xl scale above stays for call sites outside the migrated components. */
+  --text-display: 32px;
+  --text-display--line-height: 40px;
+  --text-heading-lg: 24px;
+  --text-heading-lg--line-height: 32px;
+  --text-heading-md: 20px;
+  --text-heading-md--line-height: 28px;
+  --text-heading-sm: 18px;
+  --text-heading-sm--line-height: 26px;
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 24px;
+  --text-body-base: 14px;
+  --text-body-base--line-height: 20px;
+  --text-body-sm: 12px;
+  --text-body-sm--line-height: 16px;
+  --text-label-lg: 16px;
+  --text-label-lg--line-height: 24px;
+  --text-label-base: 14px;
+  --text-label-base--line-height: 20px;
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-overline: 12px;
+  --text-overline--line-height: 16px;
+  --text-code: 13px;
+  --text-code--line-height: 20px;
+}
+
+/* display shrinks under 640px per the WA spec */
+@media (max-width: 640px) {
+  :root {
+    --text-display: 28px;
+    --text-display--line-height: 36px;
+  }
+}

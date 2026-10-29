@@ -1,6 +1,0 @@
-export { Login } from './Authentication/Login'
-export { Register } from './Authentication/Register'
-export { ProjectsList } from './Projects/ProjectsList'
-export { ProjectDetail } from './Projects/ProjectDetail'
-export { NotFound } from './NotFound'
-export { GithubCallback } from './Integrations/GithubCallback'

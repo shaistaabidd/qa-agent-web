@@ -1,0 +1,30 @@
+# === Environment / secrets lockdown ===
+# Blocks these from: semantic search, Agent file reads, Tab, Inline Edit, @ mentions.
+# NOTE: this does NOT block terminal commands or MCP tools run by Agent.
+# See .cursor/rules/no-env-access.mdc + Terminal command deny-list for that layer.
+
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+
+# Common secret/credential file patterns while we're at it
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/id_rsa
+**/id_rsa.pub
+**/credentials.json
+**/secrets.json
+**/secrets.yml
+**/secrets.yaml
+.npmrc
+.pypirc
+.netrc
+**/*.keystore
+**/google-services.json
+**/GoogleService-Info.plist

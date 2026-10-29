@@ -1,0 +1,35 @@
+# Spec-Driven Development (SDD)
+
+Non-trivial work gets a spec before code, committed in the repo at
+`specs/<NNN>-<slug>/`, following a six-phase workflow (Specify → Plan →
+Tasks → Implement → Converge/Verify → Ship).
+
+Same bar as `always-make-todo.md`: 3+ steps, touches more than 2 files, or
+you'd run `/spec` on it anyway → it needs a spec. One-line fixes, dependency
+bumps, formatting-only changes, and typo fixes skip straight to a normal
+commit.
+
+Two tiers once it clears that bar:
+
+- **Lite** (default) — one user-facing flow, 2-4 files, no auth/payments/
+  billing/data-model/migration changes, no new dependency, ships in one PR.
+  A single committed file: `specs/<NNN>-<slug>.md`.
+- **Full** — 2+ flows, 5+ files, touches auth/payments/billing/data model or
+  migrations, adds a new dependency, or spans multiple PRs. The existing
+  `specs/<NNN>-<slug>/{spec,plan,tasks}.md` folder.
+
+If a Lite spec grows past these bounds during Build, stop and convert it to
+Full rather than keep stretching it — see
+`specs/_template/lite-spec.md`'s closing note for how.
+
+Features under `app/features/` built before this rule existed (auth,
+co-admins, dashboard, design-system, email-logs, onboarding, pricing,
+resources, settings, sms-logs) do not get retroactive specs. SDD applies to
+new work going forward only.
+
+The full workflow — folder convention, branch naming, phase-by-phase
+detail, EARS notation, the Specify Quality Pass, Definition of Ready/Done,
+archiving — lives in `.claude/rules/spec-driven-development-detail.md`
+(mirrored at `.cursor/rules/spec-driven-development-detail.mdc`), scoped to
+load automatically once `specs/**` is in play. Read it before creating or
+editing anything under `specs/`.

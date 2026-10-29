@@ -1,0 +1,26 @@
+---
+description: Always ask follow-up questions after completing a task to confirm the result meets expectations and surface related next steps
+alwaysApply: true
+---
+
+# Ask Follow-Up Questions
+
+After completing any task, always ask follow-up questions to confirm the result is correct and check if anything related needs attention.
+
+## After Completing a Task
+
+Always end with questions such as:
+
+- "Does this match what you had in mind?"
+- "Should this also be applied to [related component/page]?"
+- "Do you want me to handle any edge cases, such as [X]?"
+- "Is there any loading or error state that should be handled here?"
+
+## When to Ask Mid-Task
+
+Also pause and ask if you encounter:
+
+- Multiple valid implementation approaches
+- Unexpected existing code that conflicts with the task
+- Missing data, props, or API details needed to complete the work
+- Potential side effects on other parts of the codebase

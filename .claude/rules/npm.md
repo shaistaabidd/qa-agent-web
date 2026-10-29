@@ -1,0 +1,24 @@
+# npm only
+
+This repo uses npm 11. `package.json` sets `packageManager`. Do not use pnpm or yarn.
+
+- Install, add, update, and remove dependencies with npm: `npm install --legacy-peer-deps`, `npm install <pkg> --legacy-peer-deps`, `npm install -D <pkg> --legacy-peer-deps`, `npm uninstall <pkg>`, `npm update --legacy-peer-deps`.
+- Run scripts with npm: `npm run dev`, `npm run build`, `npm run start`, `npm run typecheck`.
+- Run one-off binaries with `npx`.
+- Commit `package-lock.json`. Install with `npm ci --legacy-peer-deps` in CI and Docker.
+
+`--legacy-peer-deps` is required. `@apollo/client-integration-react-router` peers React Router 7, and this app uses React Router 8.
+
+```bash
+# Bad
+pnpm install
+pnpm add react
+yarn add react
+
+# Good
+npm install --legacy-peer-deps
+npm install react --legacy-peer-deps
+npx some-cli
+```
+
+Do not add `pnpm-lock.yaml` or `yarn.lock`. Do not change `packageManager` away from npm.
